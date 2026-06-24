@@ -50,13 +50,14 @@ def _secret() -> str:
 	return get_decrypted_password("Distribution Source", "Distribution Source", "shared_secret")
 
 
-def mint_token(course=None, ttl=300, now=None) -> str:
-	"""Mint a token byte-compatible with academy.api.verify_enrol_token (authenticates
-	the content fetch; no learner identity is needed for distribution)."""
+def mint_token(course=None, learner_email=None, personnel=None, ttl=300, now=None) -> str:
+	"""Mint a token byte-compatible with academy.api.verify_enrol_token. `learner_email`
+	is set for the SSO launch (so the hub logs that learner in); omitted for plain
+	distribution calls (catalogue / request)."""
 	src = _source()
 	now = int(now if now is not None else time.time())
-	payload = {"c": src.distribution_client, "course": course, "e": None,
-	           "p": None, "iat": now, "exp": now + int(ttl)}
+	payload = {"c": src.distribution_client, "course": course, "e": learner_email,
+	           "p": personnel, "iat": now, "exp": now + int(ttl)}
 	pb = _b64u(json.dumps(payload, separators=(",", ":"), sort_keys=True).encode())
 	return pb + "." + _sign(pb, _secret())
 
@@ -177,6 +178,9 @@ def sync_hub_courses():
 			HUB_ORIGIN_FIELD: cid,
 			HUB_URL_FIELD: f"{base}/lms/courses/{cid}",
 			"published": 1,
+			# Hub courses are competency-bearing → a completion (pulled back) mints a
+			# local certificate. (db.set_value bypasses the read-only guard.)
+			"grants_training_certificate": 1,
 		})
 		activated.append(local)
 	frappe.db.commit()
@@ -221,6 +225,60 @@ def request_hub_course(course):
 		frappe.log_error(title=f"worgify: request for {course} failed", message=frappe.get_traceback())
 		frappe.throw(_("Could not send the request to the hub. Try again."))
 	return resp or {"ok": True}
+
+
+@frappe.whitelist()
+def get_hub_launch_url(course):
+	"""For a local hub-shell course, mint a per-learner token and return the hub SSO
+	launch URL to embed. The hub logs the current learner in and serves the live player.
+	Returns None when the course is not a hub course / distribution is off."""
+	origin = frappe.db.get_value("LMS Course", course, HUB_ORIGIN_FIELD)
+	if not origin or not _enabled():
+		return None
+	token = mint_token(course=origin, learner_email=frappe.session.user, ttl=600)
+	base = _source().hub_base_url.rstrip("/")
+	return f"{base}/api/method/academy.api.sso_launch?token={token}&course={origin}"
+
+
+@frappe.whitelist()
+def pull_hub_completions():
+	"""Pull completed hub-course enrolments back from the hub and turn each into local
+	competency evidence: mark the local shell enrolment complete + mint a local
+	LMS Certificate (→ Person-360 + MRB + Competency Overview). Idempotent; fail-soft.
+	Scheduled daily + callable."""
+	if not _enabled():
+		return {"minted": 0, "note": "distribution off"}
+	src = _source()
+	try:
+		data = _hub_get("academy.api.completions_since", {
+			"distribution_client": src.distribution_client,
+			"token": mint_token(ttl=120),
+			"cursor": src.last_cursor or "",
+		})
+	except Exception:
+		frappe.log_error(title="worgify: completions pull failed", message=frappe.get_traceback())
+		return {"minted": 0}
+	from lms.worgify_competency import issue_completion_certificate
+
+	minted = 0
+	for row in data.get("completions", []):
+		email, hub_course = row.get("member"), row.get("course")
+		if not email or not hub_course:
+			continue
+		shell = frappe.db.get_value("LMS Course", {HUB_ORIGIN_FIELD: hub_course}, "name")
+		if not shell or not frappe.db.exists("User", email):
+			continue
+		if not frappe.db.exists("LMS Enrollment", {"member": email, "course": shell}):
+			frappe.get_doc({"doctype": "LMS Enrollment", "member": email, "course": shell}).insert(
+				ignore_permissions=True
+			)
+		frappe.db.set_value("LMS Enrollment", {"member": email, "course": shell}, "progress", 100)
+		if issue_completion_certificate(shell, email):
+			minted += 1
+	if data.get("cursor"):
+		frappe.db.set_value("Distribution Source", "Distribution Source", "last_cursor", data["cursor"])
+	frappe.db.commit()
+	return {"minted": minted, "cursor": data.get("cursor")}
 
 
 def guard_hub_course_edit(doc, method=None):

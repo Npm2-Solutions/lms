@@ -220,6 +220,8 @@ scheduler_events = {
 		"lms.worgify_competency.reconcile_completions",
 		# Worgify: distribute entitled vendor courses from the hub as local courses.
 		"lms.worgify_federation.sync_hub_courses",
+		# Worgify: pull hub-course completions back → local certificate → competency.
+		"lms.worgify_federation.pull_hub_completions",
 	],
 }
 

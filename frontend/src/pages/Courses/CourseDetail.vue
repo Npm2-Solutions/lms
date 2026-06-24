@@ -99,12 +99,14 @@
 			</template>
 		</LayoutHeader>
 
-		<div v-if="isHubCourse" class="flex flex-1 min-h-0 flex-col">
+		<div v-if="!course.data" class="flex-1 min-h-0" />
+		<div v-else-if="isHubCourse" class="flex flex-1 min-h-0 flex-col">
 			<iframe
-				v-if="hubEmbedOk"
-				:src="course.data?.worgify_hub_url"
+				v-if="hubEmbedOk && hubLaunchUrl"
+				:src="hubLaunchUrl"
 				class="w-full flex-1 min-h-0 border-0"
 				:title="course.data?.title"
+				allow="fullscreen"
 			/>
 			<div
 				v-else
@@ -173,6 +175,7 @@ import {
 	Badge,
 	Breadcrumbs,
 	Button,
+	call,
 	createResource,
 	Dropdown,
 	Tabs,
@@ -395,6 +398,25 @@ const hubEmbedOk = computed<boolean>(() => {
 		return false
 	}
 })
+// Per-learner SSO launch URL for the embedded hub player (mints a token server-side so
+// the hub logs this learner in). Fetched when we open a hub course on a different origin.
+const hubLaunchUrl = ref<string>('')
+watch(
+	[isHubCourse, hubEmbedOk, () => course.data?.name],
+	async ([isHub, embedOk, name]) => {
+		hubLaunchUrl.value = ''
+		if (isHub && embedOk && name) {
+			try {
+				hubLaunchUrl.value = await call('lms.worgify_federation.get_hub_launch_url', {
+					course: name,
+				})
+			} catch {
+				hubLaunchUrl.value = ''
+			}
+		}
+	},
+	{ immediate: true }
+)
 
 const breadcrumbs = computed(() => {
 	const crumbs: {
