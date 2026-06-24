@@ -435,7 +435,7 @@ const attachFullscreenEvent = () => {
 	} else {
 		zenModeEnabled.value = false
 		if (!hasQuiz.value) {
-			allowDiscussions.value = true
+			allowDiscussions.value = !!settingsStore.settings.data?.show_discussions /* Worgify */
 		}
 	}
 }
@@ -496,7 +496,7 @@ const checkQuiz = () => {
 		const quizRegex = /\{\{ Quiz\(".*"\) \}\}/
 		hasQuiz.value = quizRegex.test(lesson.body)
 		if (!hasQuiz.value && !zenModeEnabled) {
-			allowDiscussions.value = true
+			allowDiscussions.value = !!settingsStore.settings.data?.show_discussions /* Worgify */
 		} else {
 			allowDiscussions.value = false
 		}
@@ -918,7 +918,7 @@ const checkIfDiscussionsAllowed = () => {
 			user.data?.is_moderator ||
 			user.data?.is_instructor)
 	) {
-		allowDiscussions.value = true
+		allowDiscussions.value = !!settingsStore.settings.data?.show_discussions /* Worgify */
 	} else {
 		allowDiscussions.value = false
 	}
@@ -1002,7 +1002,7 @@ const showDiscussionsInZenMode = () => {
 	if (allowDiscussions.value) {
 		allowDiscussions.value = false
 	} else {
-		allowDiscussions.value = true
+		allowDiscussions.value = !!settingsStore.settings.data?.show_discussions /* Worgify */
 		currentTab.value = 'Community'
 		scrollDiscussionsIntoView()
 	}

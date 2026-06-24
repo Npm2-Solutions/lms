@@ -1,0 +1,110 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-06-23 14:17:03.794721",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mode_section",
+  "worgify_mode",
+  "brand_name",
+  "features_section",
+  "enable_company_self_signup",
+  "enable_marketplace",
+  "enable_distribution",
+  "col_break_feat",
+  "enable_stripe_billing",
+  "enable_competency"
+ ],
+ "fields": [
+  {
+   "fieldname": "mode_section",
+   "fieldtype": "Section Break",
+   "label": "Platform Mode"
+  },
+  {
+   "default": "Client",
+   "description": "Client = academy embedded in an optisuites bench (\"Training\"). Hub = standalone vendor academy (\"Worgify Academy\"). Admin-only.",
+   "fieldname": "worgify_mode",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Worgify Mode",
+   "options": "Client\nHub",
+   "reqd": 1
+  },
+  {
+   "description": "Overrides the per-mode default (Client \u2192 Training, Hub \u2192 Worgify Academy).",
+   "fieldname": "brand_name",
+   "fieldtype": "Data",
+   "label": "Brand Name (override)"
+  },
+  {
+   "description": "Leave a flag unticked to use the per-mode default.",
+   "fieldname": "features_section",
+   "fieldtype": "Section Break",
+   "label": "Features"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_company_self_signup",
+   "fieldtype": "Check",
+   "label": "Company Self-Signup (Hub)"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_marketplace",
+   "fieldtype": "Check",
+   "label": "Course Marketplace / Sales (Hub)"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_distribution",
+   "fieldtype": "Check",
+   "label": "Distribution to Client Benches (Hub)"
+  },
+  {
+   "fieldname": "col_break_feat",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_stripe_billing",
+   "fieldtype": "Check",
+   "label": "Automatic (Stripe) Billing (Hub)"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_competency",
+   "fieldtype": "Check",
+   "label": "Competency / MRB Bridge (Client)"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-06-23 14:17:03.794721",
+ "modified_by": "Administrator",
+ "module": "LMS",
+ "name": "Worgify Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -34,7 +34,7 @@ from lms.lms.doctype.lms_enrollment.lms_enrollment import update_program_progres
 from lms.lms.md import find_macros
 
 RE_SLUG_NOTALLOWED = re.compile("[^a-z0-9]+")
-LMS_ROLES = ["Moderator", "Course Creator", "Batch Evaluator", "LMS Student"]
+LMS_ROLES = ["Moderator", "Course Creator", "Batch Evaluator", "LMS Student", "Company Admin"]
 
 
 def get_lms_path():
@@ -399,6 +399,14 @@ def has_student_role(member: str = None):
 	return frappe.db.get_value(
 		"Has Role",
 		{"parent": member or frappe.session.user, "role": "LMS Student"},
+		"name",
+	)
+
+
+def has_company_admin_role(member: str = None):
+	return frappe.db.get_value(
+		"Has Role",
+		{"parent": member or frappe.session.user, "role": "Company Admin"},
 		"name",
 	)
 
@@ -910,7 +918,7 @@ def get_course_content_stats(course: str) -> dict:
 
 
 def get_course_fields():
-	return [
+	fields = [
 		"name",
 		"title",
 		"tags",
@@ -936,6 +944,12 @@ def get_course_fields():
 		"enrollments",
 		"rating",
 	]
+	# Worgify: surface the "from hub" marker + live player URL when present (client only).
+	if frappe.db.has_column("LMS Course", "worgify_hub_origin"):
+		fields.append("worgify_hub_origin")
+	if frappe.db.has_column("LMS Course", "worgify_hub_url"):
+		fields.append("worgify_hub_url")
+	return fields
 
 
 @frappe.whitelist(allow_guest=True)
@@ -2076,6 +2090,7 @@ def get_roles(name: str) -> dict:
 		"course_creator": has_course_instructor_role(name),
 		"batch_evaluator": has_evaluator_role(name),
 		"lms_student": has_student_role(name),
+		"company_admin": has_company_admin_role(name),
 	}
 
 

@@ -124,6 +124,43 @@
 				</template>
 			</div>
 		</CollapsibleSection>
+
+		<CollapsibleSection v-if="competencyEnabled" :label="__('Competency')">
+			<div class="flex flex-col gap-y-4">
+				<Switch
+					size="sm"
+					:modelValue="Boolean(doc?.grants_training_certificate)"
+					:label="__('Competency-bearing course')"
+					:description="
+						__('On completion, record a competency certificate for the learner — surfaced in Personnel 360 and the MRB dossier.')
+					"
+					@update:modelValue="setGrants"
+				/>
+				<template v-if="doc?.grants_training_certificate">
+					<FormControl
+						v-model="doc.certificate_validity_months"
+						type="number"
+						:label="__('Certificate validity (months) — 0 = no expiry')"
+						variant="outline"
+						@input="markDirty()"
+					/>
+					<FormControl
+						v-model="doc.regulatory_reference"
+						:label="__('Regulatory reference')"
+						:placeholder="__('e.g. ISO 3834-2')"
+						variant="outline"
+						@input="markDirty()"
+					/>
+					<FormControl
+						v-model="doc.competency_tags"
+						:label="__('Competency tags')"
+						:placeholder="__('comma-separated')"
+						variant="outline"
+						@input="markDirty()"
+					/>
+				</template>
+			</div>
+		</CollapsibleSection>
 	</div>
 
 	<NewMemberModal
@@ -140,6 +177,7 @@ import { computed, inject, ref } from 'vue'
 import CollapsibleSection from '@/components/CollapsibleSection.vue'
 import Link from '@/components/Controls/Link.vue'
 import NewMemberModal from '@/components/Modals/NewMemberModal.vue'
+import { sessionStore } from '@/stores/session'
 import type { CourseFormContext, Resource } from '@/types/api'
 
 const { resource, markDirty } = inject<CourseFormContext>('courseForm')!
@@ -148,6 +186,8 @@ const dayjs = inject('$dayjs') as typeof import('dayjs')
 const doc = computed(() => resource.doc)
 const evaluatorLinkRef = ref<{ reload: () => void } | null>(null)
 const showMemberModal = ref<boolean>(false)
+const { worgify } = sessionStore()
+const competencyEnabled = computed<boolean>(() => !!worgify.features?.enable_competency)
 
 const publishedOnLabel = computed<string>(() =>
 	doc.value?.published_on
@@ -176,6 +216,12 @@ function setPaidCourse(val: boolean) {
 function setPaidCertificate(val: boolean) {
 	if (!resource.doc) return
 	resource.doc.paid_certificate = val ? 1 : 0
+	markDirty()
+}
+
+function setGrants(val: boolean) {
+	if (!resource.doc) return
+	resource.doc.grants_training_certificate = val ? 1 : 0
 	markDirty()
 }
 

@@ -230,7 +230,7 @@
 			"label": "Live Class"
 		},
 		{
-			"default": "1",
+			"default": "0",
 			"fieldname": "show_discussions",
 			"fieldtype": "Check",
 			"label": "Discussions"
@@ -296,7 +296,7 @@
 			"label": "Batches"
 		},
 		{
-			"default": "1",
+			"default": "0",
 			"fieldname": "jobs",
 			"fieldtype": "Check",
 			"label": "Jobs"
@@ -426,7 +426,7 @@
 			"fieldtype": "Column Break"
 		},
 		{
-			"default": "1",
+			"default": "0",
 			"fieldname": "programming_exercises",
 			"fieldtype": "Check",
 			"label": "Programming Exercises"

@@ -73,11 +73,14 @@ import Transactions from '@/components/Settings/Transactions/Transactions.vue'
 import ZoomSettings from '@/components/Settings/ZoomSettings.vue'
 import GoogleMeetSettings from '@/components/Settings/GoogleMeetSettings.vue'
 import Badges from '@/components/Settings/Badges.vue'
+import WorgifyPlatform from '@/components/Settings/WorgifyPlatform.vue'
+import { sessionStore } from '@/stores/session'
 
 const show = defineModel()
 const doctype = ref('LMS Settings')
 const activeTab = ref(null)
 const settingsStore = useSettings()
+const { worgify } = sessionStore()
 
 const data = createDocumentResource({
 	doctype: doctype.value,
@@ -89,6 +92,22 @@ const data = createDocumentResource({
 
 const tabsStructure = computed(() => {
 	return [
+		...(worgify.can_edit_mode
+			? [
+					{
+						label: 'Platform',
+						hideLabel: true,
+						items: [
+							{
+								label: 'Platform',
+								icon: 'Settings',
+								description: 'Worgify platform mode and features.',
+								template: markRaw(WorgifyPlatform),
+							},
+						],
+					},
+				]
+			: []),
 		{
 			label: 'Configuration',
 			hideLabel: true,

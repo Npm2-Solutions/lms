@@ -26,8 +26,9 @@
 					</nav>
 				</div>
 			</div>
+			<!-- Worgify: "More" / add-links section trimmed -->
 			<div
-				v-if="sidebarSettings.data?.web_pages?.length || isModerator"
+				v-if="false"
 				class="mt-4"
 			>
 				<div
@@ -201,12 +202,7 @@
 							"
 						/>
 					</Tooltip>
-					<Tooltip :text="__('Powered by Frappe Learning')">
-						<Zap
-							class="size-4 stroke-1.5 text-ink-gray-7 cursor-pointer"
-							@click="redirectToWebsite()"
-						/>
-					</Tooltip>
+					<!-- Worgify: removed the Frappe "Powered by" lightning link -->
 				</div>
 				<Tooltip
 					:text="
@@ -232,7 +228,7 @@
 			v-model="showHelpModal"
 			v-model:articles="articles"
 			appName="learning"
-			title="Frappe Learning"
+			title="Worgify Academy"
 			:logo="LMSLogo"
 			:afterSkip="(step) => capture('onboarding_step_skipped_' + step)"
 			:afterSkipAll="() => capture('onboarding_steps_skipped')"
@@ -652,7 +648,8 @@ const setUpOnboarding = () => {
 		onboardingDetails = useOnboarding('learning')
 		onboardingDetails.setUp(steps)
 		isOnboardingStepsCompleted = onboardingDetails.isOnboardingStepsCompleted
-		showOnboarding.value = true
+		// Worgify: onboarding trimmed — never surface the "Getting started" banner/popup.
+		showOnboarding.value = false
 	}
 }
 

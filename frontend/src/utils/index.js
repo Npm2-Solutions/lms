@@ -8,6 +8,7 @@ import { Upload } from '@/utils/upload'
 import { Markdown } from '@/utils/markdownParser'
 import { useSettings } from '@/stores/settings'
 import { usersStore } from '@/stores/user'
+import { sessionStore } from '@/stores/session'
 import Header from '@editorjs/header'
 import Paragraph from '@editorjs/paragraph'
 import { CodeBox } from '@/utils/code'
@@ -464,6 +465,32 @@ const getSidebarItems = (forMobile = false) => {
 			],
 		},
 		{
+			label: 'Worgify',
+			hideLabel: true,
+			items: [
+				{
+					label: 'My Organization',
+					icon: 'Users',
+					to: 'WorgifyOrganization',
+					activeFor: ['WorgifyOrganization'],
+					condition: () => {
+						const { worgify } = sessionStore()
+						return !!worgify?.organization
+					},
+				},
+				{
+					label: 'Competency',
+					icon: 'Award',
+					to: 'WorgifyCompetency',
+					activeFor: ['WorgifyCompetency'],
+					condition: () => {
+						const { worgify } = sessionStore()
+						return !!(worgify?.is_company_admin && worgify?.features?.enable_competency)
+					},
+				},
+			],
+		},
+		{
 			label: 'Learning',
 			hideLabel: true,
 			items: [
@@ -503,6 +530,10 @@ const getSidebarItems = (forMobile = false) => {
 					icon: 'Briefcase',
 					to: 'Jobs',
 					activeFor: ['Jobs', 'JobDetail'],
+					// Worgify: trimmed — hidden unless the `jobs` LMS Setting is re-enabled.
+					condition: () => {
+						return settings.data?.jobs
+					},
 				},
 				{
 					label: 'Statistics',
@@ -563,8 +594,13 @@ const getSidebarItems = (forMobile = false) => {
 					label: 'Programming Exercises',
 					icon: 'Code',
 					to: 'ProgrammingExercises',
+					// Worgify: trimmed — hidden unless `programming_exercises` is re-enabled.
 					condition: () => {
-						return !forMobile && isAdmin()
+						return (
+							settings.data?.programming_exercises &&
+							!forMobile &&
+							isAdmin()
+						)
 					},
 					activeFor: [
 						'ProgrammingExercises',

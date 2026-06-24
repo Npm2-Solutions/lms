@@ -11,6 +11,21 @@ const routes = [
 		component: () => import('@/pages/Home/Home.vue'),
 	},
 	{
+		path: '/worgify/organization',
+		name: 'WorgifyOrganization',
+		component: () => import('@/pages/Worgify/MyOrganization.vue'),
+	},
+	{
+		path: '/worgify/register-company',
+		name: 'WorgifyCompanySignup',
+		component: () => import('@/pages/Worgify/CompanySignup.vue'),
+	},
+	{
+		path: '/worgify/competency',
+		name: 'WorgifyCompetency',
+		component: () => import('@/pages/Worgify/CompetencyOverview.vue'),
+	},
+	{
 		path: '/courses',
 		name: 'Courses',
 		component: () => import('@/pages/Courses/Courses.vue'),

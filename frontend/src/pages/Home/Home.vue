@@ -6,8 +6,9 @@
 					{{ __('Hey') }}, {{ user.data?.full_name }} 👋
 				</div>
 				<div>
+					<!-- Worgify: gamification (streak) trimmed -->
 					<div
-						v-if="!isAdmin"
+						v-if="false"
 						@click="showStreakModal = true"
 						class="bg-surface-amber-2 px-2 py-1 rounded-md cursor-pointer"
 					>

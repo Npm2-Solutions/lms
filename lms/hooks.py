@@ -77,6 +77,16 @@ before_uninstall = "lms.install.before_uninstall"
 setup_wizard_complete = "lms.demo.demo_data.create_demo_data"
 after_migrate = [
 	"lms.sqlite.build_index_in_background",
+	# Worgify Academy: ensure the role set (Company Admin, …).
+	"lms.worgify.ensure_worgify_roles",
+	# Worgify Academy competency bridge — adds the guarded `personnel` link to LMS
+	# Certificate (client benches with optisuites only; no-op on the hub).
+	"lms.worgify_competency.ensure_competency_fields",
+	# Worgify Academy group layer — mirror optisuites Customers as Learning
+	# Organizations + seed members from portal users (client only; no-op on the hub).
+	"lms.worgify_groups.sync_organizations_from_customers",
+	# Worgify Academy — ensure the "from hub" marker on LMS Course (distribution).
+	"lms.worgify_federation.ensure_hub_origin_field",
 ]
 
 # Desk Notifications
@@ -91,6 +101,8 @@ after_migrate = [
 
 permission_query_conditions = {
 	"LMS Certificate": "lms.lms.doctype.lms_certificate.lms_certificate.get_permission_query_conditions",
+	# A Company Admin sees only the organization(s) they run.
+	"Learning Organization": "lms.worgify_groups.get_permission_query_conditions",
 }
 
 has_permission = {
@@ -100,6 +112,7 @@ has_permission = {
 	"LMS Certificate": "lms.lms.doctype.lms_certificate.lms_certificate.has_permission",
 	"Course Lesson": "lms.lms.doctype.course_lesson.course_lesson.has_permission",
 	"File": "lms.lms.permissions.file_has_permission",
+	"Learning Organization": "lms.worgify_groups.has_permission",
 }
 
 # DocType Class
@@ -129,6 +142,60 @@ doc_events = {
 		"validate": "lms.lms.user.validate_username_duplicates",
 		"before_insert": "lms.lms.user.add_lms_student_role",
 	},
+	# Worgify Academy: stamp the competency owner (Personnel) on issued certificates.
+	"LMS Certificate": {
+		"after_insert": "lms.worgify_competency.on_lms_certificate",
+	},
+	# Worgify: auto-issue the competency certificate on self-paced completion.
+	"LMS Course Progress": {
+		"on_update": "lms.worgify_competency.on_course_progress",
+	},
+	# Worgify: vendor (hub) courses are read-only on a client bench.
+	"LMS Course": {
+		"validate": "lms.worgify_federation.guard_hub_course_edit",
+	},
+}
+
+# Worgify Academy — cross-app integration (Design 11)
+# ---------------------------------------------------
+# Consumed by optisuites (Person-360) and recordbook (MRB dossier) WHEN PRESENT;
+# absent consumers simply ignore these, so the fork stays standalone (hub) too.
+
+# Surface issued training certificates into the optisuites Personnel 360 view.
+personnel_role_profiles = [
+	{
+		"doctype": "LMS Certificate",
+		"personnel_field": "personnel",
+		"label": "Training Certificate",
+		"icon": "education",
+		"fields": ["course_title", "issue_date", "expiry_date"],
+	},
+	{
+		"doctype": "External Training Record",
+		"personnel_field": "personnel",
+		"label": "External Training",
+		"icon": "education",
+		"fields": ["title", "issuing_body", "issue_date", "expiry_date"],
+	},
+]
+
+# Contribute the org-wide Personnel Training & Competency register to the MRB.
+record_book_contributors = {
+	"training": {
+		"label": "Training & Competency",
+		"icon": "education",
+		"app_version_contract": "1.0",
+		"sections": {
+			"training_register": {
+				"title": "Personnel Training & Competency",
+				"description": "Organisation-wide register of personnel training certificates (LMS-derived), with validity status.",
+				"builder": "lms.worgify_competency.build_training_register",
+				"supported_scopes": ["Project", "Assembly", "JointList", "Organization"],
+				"render_orientation": "Landscape",
+				"pf_context_keys": ["doc", "scope"],
+			},
+		},
+	},
 }
 
 # Scheduled Tasks
@@ -149,6 +216,10 @@ scheduler_events = {
 		"lms.lms.doctype.lms_batch.lms_batch.send_batch_start_reminder",
 		"lms.lms.doctype.lms_live_class.lms_live_class.send_live_class_reminder",
 		"lms.lms.doctype.lms_course.lms_course.send_notification_for_published_courses",
+		# Worgify: reconcile competency certificates for completed courses (safety net).
+		"lms.worgify_competency.reconcile_completions",
+		# Worgify: distribute entitled vendor courses from the hub as local courses.
+		"lms.worgify_federation.sync_hub_courses",
 	],
 }
 
@@ -273,15 +344,10 @@ on_login = "lms.lms.user.on_login"
 
 get_site_info = "lms.activation.get_site_info"
 
-add_to_apps_screen = [
-	{
-		"name": "lms",
-		"logo": "/assets/lms/frontend/learning.svg",
-		"title": "Learning",
-		"route": f"/{get_lms_path()}",
-		"has_permission": "lms.lms.api.check_app_permission",
-	}
-]
+# Opti Academy fork: the launcher tile is provided by our `training` app (-> /lms),
+# so the engine's own "Learning"/"Frappe Learning" tile is suppressed to keep ONE
+# unified entry for the user (no green Frappe tile).
+add_to_apps_screen = []
 
 sqlite_search = ["lms.sqlite.LearningSearch"]
 auth_hooks = ["lms.auth.authenticate"]

@@ -1,0 +1,74 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-06-24 17:04:04.202204",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "hub_base_url",
+  "distribution_client",
+  "shared_secret",
+  "last_cursor"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Federation Enabled"
+  },
+  {
+   "description": "Base URL of the Worgify Academy hub, e.g. https://academy.worgify.com",
+   "fieldname": "hub_base_url",
+   "fieldtype": "Data",
+   "label": "Hub Base URL",
+   "options": "URL"
+  },
+  {
+   "description": "The client identifier issued by the hub (matches a Distribution Client there).",
+   "fieldname": "distribution_client",
+   "fieldtype": "Data",
+   "label": "Distribution Client ID"
+  },
+  {
+   "description": "HS256 secret for enrol tokens; must match the hub's Distribution Client secret.",
+   "fieldname": "shared_secret",
+   "fieldtype": "Password",
+   "label": "Shared Secret"
+  },
+  {
+   "fieldname": "last_cursor",
+   "fieldtype": "Data",
+   "label": "Last Results Cursor",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-06-24 17:04:04.202204",
+ "modified_by": "Administrator",
+ "module": "LMS",
+ "name": "Distribution Source",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

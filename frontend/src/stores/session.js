@@ -42,11 +42,32 @@ export const sessionStore = defineStore('lms-session', () => {
 		},
 	})
 
+	// Worgify Academy mode context: platform mode (client/hub), brand, resolved
+	// feature flags + the caller's organization context. Drives mode-gating across
+	// the SPA (sidebar items, hub/client-only features).
+	const worgify = reactive({
+		mode: 'client',
+		features: {},
+		can_edit_mode: false,
+		organization: null,
+		is_company_admin: false,
+	})
+	const modeContext = createResource({
+		url: 'lms.worgify.get_mode_context',
+		cache: 'worgify_mode_context',
+		auto: true,
+		onSuccess(data) {
+			Object.assign(worgify, data)
+		},
+	})
+
 	return {
 		user,
 		isLoggedIn,
 		logout,
 		brand,
 		branding,
+		worgify,
+		modeContext,
 	}
 })

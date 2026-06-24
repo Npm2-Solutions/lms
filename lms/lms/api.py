@@ -346,16 +346,24 @@ def get_file_info(file_url):
 @frappe.whitelist(allow_guest=True)
 def get_branding():
 	"""Get branding details."""
-	fields = ["app_name"]
+	# Worgify Academy fork: the academy SPA carries its OWN brand, independent of the
+	# host site's Website Settings (on a client bench that is the PLATFORM brand,
+	# e.g. "Opti Suites"). Brand name/assets come from LMS Settings if set, else
+	# default to Worgify Academy. This is what lets the academy be branded distinctly
+	# from the optisuites platform it is embedded in.
 	image_fields = ["banner_image", "footer_logo", "favicon", "app_logo"]
-	fields = fields + image_fields
 	settings = frappe._dict()
+	# Worgify Mode brand: resolved by the ADMIN-ONLY Worgify Settings single
+	# (Client -> "Training", Hub -> "Worgify Academy"), with a brand_name override
+	# and a site_config fallback. Single source of truth: lms.worgify.
+	from lms.worgify import brand_name as _worgify_brand
 
-	for field in fields:
+	settings.update({"app_name": _worgify_brand()})
+
+	for field in image_fields:
 		value = frappe.get_cached_value("Website Settings", None, field)
-		if field in image_fields and value:
-			file_info = get_file_info(value)
-			settings.update({field: json.loads(json.dumps(file_info))})
+		if value:
+			settings.update({field: json.loads(json.dumps(get_file_info(value)))})
 		else:
 			settings.update({field: value})
 

@@ -43,6 +43,13 @@
 				v-model="moderator"
 				@update:modelValue="saveRole('moderator')"
 			/>
+			<Switch
+				size="sm"
+				:label="__('Company Admin')"
+				:description="__('Manage the organization: members, group enrolments, and seats')"
+				v-model="company_admin"
+				@update:modelValue="saveRole('company_admin')"
+			/>
 		</div>
 	</div>
 </template>
@@ -57,6 +64,7 @@ const moderator = ref(false)
 const course_creator = ref(false)
 const batch_evaluator = ref(false)
 const lms_student = ref(false)
+const company_admin = ref(false)
 const readOnlyMode = window.read_only_mode
 
 const props = defineProps({
@@ -79,6 +87,7 @@ const roles = createResource({
 			'course_creator',
 			'batch_evaluator',
 			'lms_student',
+			'company_admin',
 		]
 		for (let role of roles) {
 			if (data[role]) eval(role).value = true

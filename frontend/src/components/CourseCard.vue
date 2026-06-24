@@ -82,6 +82,13 @@
 			</div>
 
 			<div
+				v-if="course.worgify_hub_origin"
+				class="inline-flex w-fit items-center gap-1 text-xs text-ink-amber-3 bg-surface-white border border-outline-amber-1 px-2 py-0.5 rounded-md mb-1"
+			>
+				{{ __('Worgify Academy') }}
+			</div>
+
+			<div
 				v-if="course.image"
 				class="font-semibold leading-6"
 				:class="course.title.length > 32 ? 'text-lg' : 'text-xl'"

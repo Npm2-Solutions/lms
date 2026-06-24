@@ -1,0 +1,140 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "LORG-.#####",
+ "creation": "2026-06-23 14:21:58.957692",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "organization_name",
+  "status",
+  "source",
+  "cb1",
+  "admin_user",
+  "contact_email",
+  "join_code",
+  "seats_section",
+  "max_seats",
+  "seats_used",
+  "members_section",
+  "members"
+ ],
+ "fields": [
+  {
+   "fieldname": "organization_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Organization Name",
+   "reqd": 1
+  },
+  {
+   "default": "Active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Active\nPending\nSuspended"
+  },
+  {
+   "default": "Self-Registered",
+   "fieldname": "source",
+   "fieldtype": "Select",
+   "label": "Source",
+   "options": "Self-Registered\nOptisuites Customer",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "admin_user",
+   "fieldtype": "Link",
+   "label": "Company Admin",
+   "options": "User"
+  },
+  {
+   "fieldname": "contact_email",
+   "fieldtype": "Data",
+   "label": "Contact Email",
+   "options": "Email"
+  },
+  {
+   "description": "Employees self-register into this organization using this code.",
+   "fieldname": "join_code",
+   "fieldtype": "Data",
+   "label": "Join Code",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "seats_section",
+   "fieldtype": "Section Break",
+   "label": "Seats / Licensing"
+  },
+  {
+   "default": "0",
+   "description": "0 = unlimited.",
+   "fieldname": "max_seats",
+   "fieldtype": "Int",
+   "label": "Max Seats"
+  },
+  {
+   "fieldname": "seats_used",
+   "fieldtype": "Int",
+   "label": "Seats Used",
+   "read_only": 1
+  },
+  {
+   "fieldname": "members_section",
+   "fieldtype": "Section Break",
+   "label": "Members"
+  },
+  {
+   "fieldname": "members",
+   "fieldtype": "Table",
+   "label": "Members",
+   "options": "Learning Organization Member"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-06-23 18:54:30.040053",
+ "modified_by": "Administrator",
+ "module": "LMS",
+ "name": "Learning Organization",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Company Admin",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "organization_name",
+ "track_changes": 1
+}

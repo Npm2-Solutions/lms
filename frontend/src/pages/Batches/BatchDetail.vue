@@ -125,10 +125,12 @@ import AnnouncementModal from '@/pages/Batches/components/AnnouncementModal.vue'
 import BatchForm from '@/pages/Batches/BatchForm.vue'
 import BulkCertificates from '@/pages/Batches/components/BulkCertificates.vue'
 import Discussions from '@/components/Discussions.vue'
+import { useSettings } from '@/stores/settings'
 
 const router = useRouter()
 const route = useRoute()
 const { brand } = sessionStore()
+const settingsStore = useSettings()
 const user = inject('$user')
 const childRef = ref(null)
 const tabIndex = ref(0)
@@ -191,7 +193,9 @@ const updateTabs = () => {
 	}
 	addToTabs('Classes', markRaw(LiveClass), Laptop)
 	addToTabs('Announcements', markRaw(Announcements), Mail)
-	addToTabs('Discussions', markRaw(Discussions), MessageCircle)
+	// Worgify: Discussions tab hidden unless show_discussions is enabled.
+	if (settingsStore.settings.data?.show_discussions)
+		addToTabs('Discussions', markRaw(Discussions), MessageCircle)
 	if (isAdmin.value) {
 		addToTabs('Settings', markRaw(BatchForm), Settings2)
 	}

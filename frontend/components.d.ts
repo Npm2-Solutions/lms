@@ -127,6 +127,7 @@ declare module 'vue' {
     UserDropdown: typeof import('./src/components/Sidebar/UserDropdown.vue')['default']
     VideoBlock: typeof import('./src/components/VideoBlock.vue')['default']
     VideoStatistics: typeof import('./src/components/Modals/VideoStatistics.vue')['default']
+    WorgifyPlatform: typeof import('./src/components/Settings/WorgifyPlatform.vue')['default']
     ZoomAccountForm: typeof import('./src/components/Settings/ZoomAccountForm.vue')['default']
     ZoomSettings: typeof import('./src/components/Settings/ZoomSettings.vue')['default']
   }

@@ -18,7 +18,7 @@
 
 				<div class="flex flex-col gap-2">
 					<div class="text-sm text-gray-700">
-						{{ __('What is your use case for Frappe Learning?') }}
+						{{ __('What is your use case for Worgify Academy?') }}
 					</div>
 					<Select v-model="persona.useCase" :options="useCaseOptions" />
 				</div>

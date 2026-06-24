@@ -68,26 +68,70 @@
 				</Tooltip>
 			</div>
 		</div>
-		<div
-			v-if="courses.data?.length"
-			class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
-		>
-			<router-link
-				v-for="course in courses.data"
-				:to="{ name: 'CourseDetail', params: { courseName: course.name } }"
+		<template v-if="currentTab !== 'hub_available'">
+			<div
+				v-if="courses.data?.length"
+				class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
 			>
-				<CourseCard :course="course" />
-			</router-link>
-		</div>
-		<EmptyStateLayout v-else-if="!courses.list.loading" name="Courses" />
-		<div
-			v-if="!courses.list.loading && courses.hasNextPage"
-			class="flex justify-center mt-5"
-		>
-			<Button @click="courses.next()">
-				{{ __('Load More') }}
-			</Button>
-		</div>
+				<router-link
+					v-for="course in courses.data"
+					:to="{ name: 'CourseDetail', params: { courseName: course.name } }"
+				>
+					<CourseCard :course="course" />
+				</router-link>
+			</div>
+			<EmptyStateLayout v-else-if="!courses.list.loading" name="Courses" />
+			<div
+				v-if="!courses.list.loading && courses.hasNextPage"
+				class="flex justify-center mt-5"
+			>
+				<Button @click="courses.next()">
+					{{ __('Load More') }}
+				</Button>
+			</div>
+		</template>
+		<template v-else>
+			<p class="text-sm text-ink-gray-6 mb-4">
+				{{ __('Paid courses from the Worgify Academy hub. Request access and we will get in touch — free courses appear directly among your courses.') }}
+			</p>
+			<div
+				v-if="requestable.length"
+				class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
+			>
+				<div
+					v-for="c in requestable"
+					:key="c.course"
+					class="flex flex-col h-full rounded-md border-2 text-ink-gray-9 bg-surface-cards p-4"
+					style="min-height: 200px"
+				>
+					<div
+						class="inline-flex w-fit items-center gap-1 text-xs text-ink-amber-3 bg-surface-white border border-outline-amber-1 px-2 py-0.5 rounded-md mb-2"
+					>
+						{{ __('Worgify Academy') }}
+					</div>
+					<div class="font-semibold text-lg leading-6">{{ c.title }}</div>
+					<div class="short-introduction text-sm flex-1 mt-1">{{ c.intro }}</div>
+					<div class="text-sm text-ink-gray-7 mt-2">
+						{{ __('Paid · on request') }}<span v-if="c.price"> — {{ c.price }} {{ c.currency }}</span>
+					</div>
+					<Button
+						v-if="!requested[c.course]"
+						variant="solid"
+						:loading="requesting === c.course"
+						class="mt-3"
+						@click="requestCourse(c)"
+					>
+						{{ __('Request access') }}
+					</Button>
+					<Button v-else variant="subtle" disabled class="mt-3">
+						{{ __('Requested') }}
+					</Button>
+				</div>
+			</div>
+			<div v-else class="text-ink-gray-6 border rounded-lg p-6 text-center mt-2">
+				{{ __('No paid hub courses to request right now.') }}
+			</div>
+		</template>
 	</div>
 	<NewCourseModal
 		v-if="showCourseModal"
@@ -139,7 +183,10 @@ const title = ref('')
 const certification = ref(false)
 const filters = ref({})
 const currentTab = ref('live')
-const { brand } = sessionStore()
+const { brand, worgify } = sessionStore()
+const requestable = ref([])
+const requesting = ref('')
+const requested = ref({})
 const courseCount = ref(0)
 const router = useRouter()
 const showCourseModal = ref(false)
@@ -198,6 +245,27 @@ const updateCourses = () => {
 		setCategories(data)
 	})
 }
+
+const loadRequestable = () => {
+	call('lms.worgify_federation.list_requestable').then((data) => {
+		requestable.value = data || []
+	})
+}
+
+const requestCourse = (c) => {
+	requesting.value = c.course
+	call('lms.worgify_federation.request_hub_course', { course: c.course })
+		.then(() => {
+			requested.value = { ...requested.value, [c.course]: true }
+		})
+		.finally(() => {
+			requesting.value = ''
+		})
+}
+
+watch(currentTab, (tab) => {
+	if (tab === 'hub_available') loadRequestable()
+})
 
 const updateFilters = () => {
 	updateCategoryFilter()
@@ -334,6 +402,9 @@ const courseTabs = computed(() => {
 	) {
 		tabs.push({ label: __('Created'), value: 'created' })
 		tabs.push({ label: __('Unpublished'), value: 'unpublished' })
+		if (worgify?.features?.enable_distribution) {
+			tabs.push({ label: __('Available from hub'), value: 'hub_available' })
+		}
 	} else if (user.data) {
 		tabs.push({ label: __('Enrolled'), value: 'enrolled' })
 	}
