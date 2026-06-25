@@ -64,7 +64,7 @@
 					{{ __('Contact the Administrator to enroll for this course') }}
 				</Badge>
 				<Button
-					v-else-if="!isAdmin"
+					v-else-if="!isAdmin || isHubCourse"
 					@click="enrollStudent()"
 					variant="solid"
 					class="w-full mb-8"
@@ -289,4 +289,11 @@ const fetchCertificate = () => {
 const isAdmin = computed<boolean>(() => {
 	return Boolean(user.data?.is_moderator) || is_instructor()
 })
+
+// Hub (Worgify Academy) courses are read-only here — even a moderator/instructor can't
+// edit them, so they take them like any learner. Show the Enroll CTA for them regardless
+// of admin role (otherwise an admin sees no CTA at all on a hub course).
+const isHubCourse = computed<boolean>(() =>
+	Boolean((props.course.data as { worgify_hub_origin?: string })?.worgify_hub_origin)
+)
 </script>
