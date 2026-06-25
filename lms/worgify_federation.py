@@ -90,6 +90,13 @@ def _enabled() -> bool:
 	return bool(src.enabled and src.hub_base_url and src.distribution_client)
 
 
+def _is_client_bench() -> bool:
+	"""True only where the hub-origin markers exist — i.e. a distribution CLIENT bench.
+	The markers are client-only Custom Fields, so on the HUB / plain LMS every override
+	and metering hook below MUST be inert (else they query a non-existent column → 1054)."""
+	return frappe.db.has_column("LMS Course", HUB_ORIGIN_FIELD)
+
+
 def _hub_get(method, params):
 	from frappe.integrations.utils import make_get_request
 
@@ -391,7 +398,7 @@ def get_lesson_proxied(course, chapter, lesson):
 	from lms.lms.utils import get_lesson as _orig_get_lesson
 
 	data = _orig_get_lesson(course, chapter, lesson)
-	if not isinstance(data, dict) or not data:
+	if not isinstance(data, dict) or not data or not _is_client_bench():
 		return data
 	origin = frappe.db.get_value("LMS Course", course, HUB_ORIGIN_FIELD)
 	hub_lesson = data.get("name") and frappe.db.get_value("Course Lesson", data["name"], HUB_LESSON_FIELD)
@@ -426,6 +433,8 @@ def get_quiz_with_questions_proxied(quiz):
 	questions/options LIVE from the hub (answers stripped there); else render the local quiz."""
 	from lms.lms.utils import get_quiz_with_questions as _orig
 
+	if not _is_client_bench():
+		return _orig(quiz)
 	hub_quiz = frappe.db.get_value("LMS Quiz", quiz, HUB_QUIZ_FIELD) if frappe.db.exists("LMS Quiz", quiz) else None
 	if not hub_quiz or not _enabled():
 		return _orig(quiz)
@@ -448,6 +457,8 @@ def submit_quiz_proxied(quiz, results=None):
 	ON THE HUB (it owns the answers) then record a LOCAL submission + progress; else local."""
 	from lms.lms.doctype.lms_quiz.lms_quiz import submit_quiz as _orig
 
+	if not _is_client_bench():
+		return _orig(quiz, results)
 	hub_quiz = frappe.db.get_value("LMS Quiz", quiz, HUB_QUIZ_FIELD) if frappe.db.exists("LMS Quiz", quiz) else None
 	if not hub_quiz or not _enabled():
 		return _orig(quiz, results)
@@ -489,6 +500,8 @@ def check_answer_proxied(quiz, question, question_type, answers):
 	hub quiz is graded ON THE HUB; else local."""
 	from lms.lms.doctype.lms_quiz.lms_quiz import check_answer as _orig
 
+	if not _is_client_bench():
+		return _orig(quiz, question, question_type, answers)
 	hub_quiz = frappe.db.get_value("LMS Quiz", quiz, HUB_QUIZ_FIELD) if frappe.db.exists("LMS Quiz", quiz) else None
 	if not hub_quiz or not _enabled():
 		return _orig(quiz, question, question_type, answers)
@@ -526,7 +539,9 @@ def _report_hub_usage(course, learner, usage_event):
 
 
 def _enqueue_usage(course, learner, usage_event):
-	if not course or not learner or not frappe.db.get_value("LMS Course", course, HUB_ORIGIN_FIELD):
+	if not course or not learner or not _is_client_bench():
+		return  # only a client bench meters usage (the marker field is client-only)
+	if not frappe.db.get_value("LMS Course", course, HUB_ORIGIN_FIELD):
 		return  # not a hub course → nothing to meter
 	frappe.enqueue("lms.worgify_federation._report_hub_usage", queue="short",
 	               enqueue_after_commit=True, course=course, learner=learner, usage_event=usage_event)
