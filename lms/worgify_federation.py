@@ -441,6 +441,45 @@ def check_answer_proxied(quiz, question, question_type, answers):
 	})
 
 
+# --- per-learner consumption metering (billing) -------------------------------
+
+
+def _report_hub_usage(course, learner, event):
+	"""Tell the hub a learner Enrolled/Completed a hub course, so the vendor can bill per
+	seat. Runs in a worker (enqueued after commit); fail-soft + idempotent on the hub."""
+	if not _enabled():
+		return
+	origin = frappe.db.get_value("LMS Course", course, HUB_ORIGIN_FIELD)
+	if not origin:
+		return
+	try:
+		_hub_get("academy.api.report_usage", {
+			"distribution_client": _source().distribution_client,
+			"token": mint_token(course=origin, ttl=120),
+			"course": origin, "learner": learner, "event": event,
+		})
+	except Exception:
+		frappe.log_error(title=f"worgify: usage report failed ({event} {course})",
+		                 message=frappe.get_traceback())
+
+
+def _enqueue_usage(course, learner, event):
+	if not course or not learner or not frappe.db.get_value("LMS Course", course, HUB_ORIGIN_FIELD):
+		return  # not a hub course → nothing to meter
+	frappe.enqueue("lms.worgify_federation._report_hub_usage", queue="short",
+	               enqueue_after_commit=True, course=course, learner=learner, event=event)
+
+
+def on_hub_enrollment(doc, method=None):
+	"""LMS Enrollment after_insert → meter an Enrolled seat for a hub course."""
+	_enqueue_usage(getattr(doc, "course", None), getattr(doc, "member", None), "Enrolled")
+
+
+def on_hub_completion(doc, method=None):
+	"""LMS Certificate after_insert → meter a Completed seat for a hub course."""
+	_enqueue_usage(getattr(doc, "course", None), getattr(doc, "member", None), "Completed")
+
+
 def guard_hub_course_edit(doc, method=None):
 	"""A vendor (hub) course is read-only on a client bench — only attendable, never
 	edited. Blocks form/API saves of a course tagged `worgify_hub_origin`. System writes

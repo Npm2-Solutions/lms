@@ -142,13 +142,21 @@ doc_events = {
 		"validate": "lms.lms.user.validate_username_duplicates",
 		"before_insert": "lms.lms.user.add_lms_student_role",
 	},
-	# Worgify Academy: stamp the competency owner (Personnel) on issued certificates.
+	# Worgify Academy: stamp the competency owner (Personnel) on issued certificates +
+	# meter per-learner completion of a hub course back to the vendor (for billing).
 	"LMS Certificate": {
-		"after_insert": "lms.worgify_competency.on_lms_certificate",
+		"after_insert": [
+			"lms.worgify_competency.on_lms_certificate",
+			"lms.worgify_federation.on_hub_completion",
+		],
 	},
 	# Worgify: auto-issue the competency certificate on self-paced completion.
 	"LMS Course Progress": {
 		"on_update": "lms.worgify_competency.on_course_progress",
+	},
+	# Worgify: meter per-learner enrolment of a hub course back to the vendor.
+	"LMS Enrollment": {
+		"after_insert": "lms.worgify_federation.on_hub_enrollment",
 	},
 	# Worgify: vendor (hub) courses are read-only on a client bench.
 	"LMS Course": {
