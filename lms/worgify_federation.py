@@ -29,6 +29,7 @@ HUB_ACQUIRED_FIELD = "worgify_hub_acquired"
 HUB_URL_FIELD = "worgify_hub_url"
 HUB_LESSON_FIELD = "worgify_hub_lesson"  # on Course Lesson: the hub lesson a stub mirrors
 HUB_QUIZ_FIELD = "worgify_hub_quiz"  # on LMS Quiz: the hub quiz a stub mirrors
+HUB_VERSION_FIELD = "worgify_hub_version"  # on LMS Course: synced hub structure version
 
 
 # --- signed token (compact HMAC-SHA256; byte-compatible with academy.api) ------
@@ -125,6 +126,12 @@ def ensure_hub_origin_field():
 			"label": "Worgify Hub Player URL", "fieldtype": "Data", "read_only": 1,
 			"no_copy": 1, "hidden": 1, "insert_after": HUB_ACQUIRED_FIELD,
 		}).insert(ignore_permissions=True)
+	if not frappe.db.exists("Custom Field", f"LMS Course-{HUB_VERSION_FIELD}"):
+		frappe.get_doc({
+			"doctype": "Custom Field", "dt": "LMS Course", "fieldname": HUB_VERSION_FIELD,
+			"label": "Worgify Hub Version", "fieldtype": "Data", "read_only": 1,
+			"no_copy": 1, "hidden": 1, "insert_after": HUB_URL_FIELD,
+		}).insert(ignore_permissions=True)
 	# headless: mark each local lesson STUB with the hub lesson it mirrors (content is
 	# fetched live from the hub at view time, never stored locally)
 	if frappe.db.exists("DocType", "Course Lesson") and not frappe.db.exists(
@@ -182,18 +189,60 @@ def _create_shell(cid, meta):
 	return doc.name
 
 
-def _build_structure(local_course, hub_course):
-	"""Mirror the hub course's STRUCTURE (chapters + lessons) as local stubs — titles +
-	order only, empty body. Each lesson stub carries `worgify_hub_lesson` so its content
-	can be fetched LIVE at view time. Idempotent. Returns the number of lesson stubs made.
-	(Chapter/Lesson References are inserted directly so we never save the locked LMS Course.)"""
-	if not _enabled() or frappe.db.exists("Chapter Reference", {"parent": local_course}):
-		return 0
-	data = _hub_get("academy.api.course_outline", {
+def _fetch_outline(hub_course):
+	"""The hub course STRUCTURE + a `version` hash (no content)."""
+	return _hub_get("academy.api.course_outline", {
 		"distribution_client": _source().distribution_client,
 		"token": mint_token(course=hub_course, ttl=120),
 		"course": hub_course,
 	})
+
+
+def _delete_structure(local_course):
+	"""Tear down a course's local stubs (chapters + lessons + quiz stubs + references) so it
+	can be rebuilt from a newer hub outline. Learner progress is re-keyed by the caller."""
+	for ch in frappe.get_all("Chapter Reference", {"parent": local_course}, ["chapter", "name"]):
+		for lr in frappe.get_all("Lesson Reference", {"parent": ch.chapter}, ["lesson", "name"]):
+			for qz in frappe.get_all("LMS Quiz", {"lesson": lr.lesson}, ["name"]):
+				frappe.delete_doc("LMS Quiz", qz.name, force=1, ignore_permissions=True)
+			frappe.delete_doc("Lesson Reference", lr.name, force=1, ignore_permissions=True)
+			frappe.delete_doc("Course Lesson", lr.lesson, force=1, ignore_permissions=True)
+		frappe.delete_doc("Chapter Reference", ch.name, force=1, ignore_permissions=True)
+		frappe.delete_doc("Course Chapter", ch.chapter, force=1, ignore_permissions=True)
+
+
+def _rebuild_structure(local_course, outline):
+	"""Re-sync a course whose hub structure changed: snapshot completed lessons (by hub
+	lesson id), tear down + rebuild from the new outline, then re-apply progress to the
+	matching new stubs. Course-level enrolment + certificates are unaffected."""
+	completed = {}  # member -> {hub_lesson, ...}
+	for p in frappe.get_all("LMS Course Progress",
+	                        {"course": local_course, "status": "Complete"}, ["member", "lesson"]):
+		hub_l = frappe.db.get_value("Course Lesson", p.lesson, HUB_LESSON_FIELD)
+		if hub_l:
+			completed.setdefault(p.member, set()).add(hub_l)
+	# the old lessons are about to be deleted → drop their progress rows so none are orphaned
+	for p in frappe.get_all("LMS Course Progress", {"course": local_course}, ["name"]):
+		frappe.delete_doc("LMS Course Progress", p.name, force=1, ignore_permissions=True)
+	_delete_structure(local_course)
+	made = _build_structure(local_course, outline)
+	for member, hub_lessons in completed.items():
+		for hub_l in hub_lessons:
+			new_lesson = frappe.db.get_value("Course Lesson", {"course": local_course, HUB_LESSON_FIELD: hub_l}, "name")
+			if new_lesson and not frappe.db.exists("LMS Course Progress",
+			                                       {"member": member, "lesson": new_lesson, "course": local_course}):
+				frappe.get_doc({"doctype": "LMS Course Progress", "member": member,
+				                "lesson": new_lesson, "course": local_course, "status": "Complete"}).insert(
+					ignore_permissions=True
+				)
+	return made
+
+
+def _build_structure(local_course, data):
+	"""Mirror the hub course's STRUCTURE (chapters + lessons + quiz stubs) as local stubs —
+	titles + order only, empty body — from a pre-fetched outline `data`. Each lesson stub
+	carries `worgify_hub_lesson` so its content can be fetched LIVE at view time. Returns the
+	number of lesson stubs made. (References inserted directly so the locked course isn't saved.)"""
 	made = 0
 	for ci, ch in enumerate(data.get("chapters", []), start=1):
 		chap = frappe.get_doc({
@@ -239,7 +288,8 @@ def sync_hub_courses():
 	"""Headless distribution: for each GRANTED vendor course, ensure a local course (a
 	metadata shell) + mirror its STRUCTURE as local chapter/lesson stubs (no content).
 	Lesson content is fetched LIVE at view time (`get_lesson_proxied`); nothing is copied.
-	Free courses + paid courses granted after a deal. Idempotent. Admin-gated; daily."""
+	Re-syncs the structure when the hub `version` changes (progress preserved). Free courses
+	+ paid courses granted after a deal. Idempotent. Admin-gated; daily."""
 	if "System Manager" not in frappe.get_roles():
 		frappe.throw(_("Only an administrator can sync hub courses."), frappe.PermissionError)
 	if not _enabled():
@@ -257,8 +307,19 @@ def sync_hub_courses():
 				# competency-bearing → local completion mints a certificate
 				"grants_training_certificate": 1,
 			})
-		built = _build_structure(local, cid)  # idempotent (no-op if already built)
-		activated.append({"course": local, "lessons_built": built})
+		outline = _fetch_outline(cid)
+		version = outline.get("version")
+		has_structure = frappe.db.exists("Chapter Reference", {"parent": local})
+		stored = frappe.db.get_value("LMS Course", local, HUB_VERSION_FIELD)
+		if not has_structure:
+			built, action = _build_structure(local, outline), "built"
+		elif stored != version:
+			built, action = _rebuild_structure(local, outline), "resynced"
+		else:
+			built, action = 0, "up-to-date"
+		if version:
+			frappe.db.set_value("LMS Course", local, HUB_VERSION_FIELD, version)
+		activated.append({"course": local, "lessons": built, "action": action, "version": version})
 	frappe.db.commit()
 	return {"activated": activated}
 
