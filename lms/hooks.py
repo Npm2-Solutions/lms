@@ -218,10 +218,9 @@ scheduler_events = {
 		"lms.lms.doctype.lms_course.lms_course.send_notification_for_published_courses",
 		# Worgify: reconcile competency certificates for completed courses (safety net).
 		"lms.worgify_competency.reconcile_completions",
-		# Worgify: distribute entitled vendor courses from the hub as local courses.
+		# Worgify: distribute entitled vendor courses from the hub (structure stubs;
+		# content served live). Completion is local → competency via the G5 path.
 		"lms.worgify_federation.sync_hub_courses",
-		# Worgify: pull hub-course completions back → local certificate → competency.
-		"lms.worgify_federation.pull_hub_completions",
 	],
 }
 
@@ -236,6 +235,8 @@ fixtures = ["Custom Field", "Function", "Industry", "LMS Category"]
 # ------------------------------
 #
 override_whitelisted_methods = {
+	# Worgify: headless content — inject hub lesson content live for hub courses.
+	"lms.lms.utils.get_lesson": "lms.worgify_federation.get_lesson_proxied",
 	# "frappe.desk.search.get_names_for_mentions": "lms.lms.utils.get_names_for_mentions",
 }
 #

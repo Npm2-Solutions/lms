@@ -100,27 +100,6 @@
 		</LayoutHeader>
 
 		<div v-if="!course.data" class="flex-1 min-h-0" />
-		<div v-else-if="isHubCourse" class="flex flex-1 min-h-0 flex-col">
-			<iframe
-				v-if="hubEmbedOk && hubLaunchUrl"
-				:src="hubLaunchUrl"
-				class="w-full flex-1 min-h-0 border-0"
-				:title="course.data?.title"
-				allow="fullscreen"
-			/>
-			<div
-				v-else
-				class="m-5 border rounded-lg p-6 text-center text-ink-gray-7 space-y-2"
-			>
-				<div class="font-semibold text-ink-gray-9">
-					{{ __('Served live from the Worgify Academy hub') }}
-				</div>
-				<p class="text-sm">
-					{{ __('This course streams from the central hub and is not copied to this bench. The live player loads from the hub server.') }}
-				</p>
-				<p class="text-xs text-ink-gray-5">{{ course.data?.worgify_hub_url }}</p>
-			</div>
-		</div>
 		<div v-else-if="!canEdit" class="flex-1 min-h-0">
 			<CourseOverview :course="course" />
 		</div>
@@ -384,39 +363,10 @@ const isAdmin = computed<boolean>(() => {
 })
 
 // Hub (vendor) courses are read-only on a client bench: only attendable, never edited.
+// They render in the NATIVE player; lesson content is fetched live from the hub by the
+// get_lesson proxy (no iframe).
 const isHubCourse = computed<boolean>(() => Boolean(course.data?.worgify_hub_origin))
 const canEdit = computed<boolean>(() => isAdmin.value && !isHubCourse.value)
-// Hub courses are served LIVE from the hub (no local copy). The live player only loads
-// when the hub is a different origin; on a single-bench (same origin) setup it can't be
-// embedded (it would recurse), so we show an explanatory panel instead.
-const hubEmbedOk = computed<boolean>(() => {
-	const u = course.data?.worgify_hub_url
-	if (!u) return false
-	try {
-		return new URL(u).origin !== window.location.origin
-	} catch {
-		return false
-	}
-})
-// Per-learner SSO launch URL for the embedded hub player (mints a token server-side so
-// the hub logs this learner in). Fetched when we open a hub course on a different origin.
-const hubLaunchUrl = ref<string>('')
-watch(
-	[isHubCourse, hubEmbedOk, () => course.data?.name],
-	async ([isHub, embedOk, name]) => {
-		hubLaunchUrl.value = ''
-		if (isHub && embedOk && name) {
-			try {
-				hubLaunchUrl.value = await call('lms.worgify_federation.get_hub_launch_url', {
-					course: name,
-				})
-			} catch {
-				hubLaunchUrl.value = ''
-			}
-		}
-	},
-	{ immediate: true }
-)
 
 const breadcrumbs = computed(() => {
 	const crumbs: {

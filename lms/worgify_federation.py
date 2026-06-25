@@ -27,6 +27,7 @@ from frappe import _
 HUB_ORIGIN_FIELD = "worgify_hub_origin"
 HUB_ACQUIRED_FIELD = "worgify_hub_acquired"
 HUB_URL_FIELD = "worgify_hub_url"
+HUB_LESSON_FIELD = "worgify_hub_lesson"  # on Course Lesson: the hub lesson a stub mirrors
 
 
 # --- signed token (compact HMAC-SHA256; byte-compatible with academy.api) ------
@@ -123,6 +124,16 @@ def ensure_hub_origin_field():
 			"label": "Worgify Hub Player URL", "fieldtype": "Data", "read_only": 1,
 			"no_copy": 1, "hidden": 1, "insert_after": HUB_ACQUIRED_FIELD,
 		}).insert(ignore_permissions=True)
+	# headless: mark each local lesson STUB with the hub lesson it mirrors (content is
+	# fetched live from the hub at view time, never stored locally)
+	if frappe.db.exists("DocType", "Course Lesson") and not frappe.db.exists(
+		"Custom Field", f"Course Lesson-{HUB_LESSON_FIELD}"
+	):
+		frappe.get_doc({
+			"doctype": "Custom Field", "dt": "Course Lesson", "fieldname": HUB_LESSON_FIELD,
+			"label": "Worgify Hub Lesson", "fieldtype": "Data", "read_only": 1,
+			"no_copy": 1, "hidden": 1,
+		}).insert(ignore_permissions=True)
 
 
 # --- distribution: hub courses -> local courses -------------------------------
@@ -160,37 +171,68 @@ def _create_shell(cid, meta):
 	return doc.name
 
 
+def _build_structure(local_course, hub_course):
+	"""Mirror the hub course's STRUCTURE (chapters + lessons) as local stubs — titles +
+	order only, empty body. Each lesson stub carries `worgify_hub_lesson` so its content
+	can be fetched LIVE at view time. Idempotent. Returns the number of lesson stubs made.
+	(Chapter/Lesson References are inserted directly so we never save the locked LMS Course.)"""
+	if not _enabled() or frappe.db.exists("Chapter Reference", {"parent": local_course}):
+		return 0
+	data = _hub_get("academy.api.course_outline", {
+		"distribution_client": _source().distribution_client,
+		"token": mint_token(course=hub_course, ttl=120),
+		"course": hub_course,
+	})
+	made = 0
+	for ci, ch in enumerate(data.get("chapters", []), start=1):
+		chap = frappe.get_doc({
+			"doctype": "Course Chapter", "course": local_course, "title": ch.get("title") or "Module",
+		}).insert(ignore_permissions=True)
+		for li, ls in enumerate(ch.get("lessons", []), start=1):
+			lesson = frappe.get_doc({
+				"doctype": "Course Lesson", "chapter": chap.name, "course": local_course,
+				"title": ls.get("title") or "Lesson", "body": "", "content": "",
+				HUB_LESSON_FIELD: ls.get("lesson"),
+			})
+			lesson.flags.ignore_worgify_lock = True
+			lesson.insert(ignore_permissions=True)
+			frappe.get_doc({
+				"doctype": "Lesson Reference", "parent": chap.name, "parenttype": "Course Chapter",
+				"parentfield": "lessons", "idx": li, "lesson": lesson.name,
+			}).insert(ignore_permissions=True)
+			made += 1
+		frappe.get_doc({
+			"doctype": "Chapter Reference", "parent": local_course, "parenttype": "LMS Course",
+			"parentfield": "chapters", "idx": ci, "chapter": chap.name,
+		}).insert(ignore_permissions=True)
+	return made
+
+
 @frappe.whitelist()
 def sync_hub_courses():
-	"""Make GRANTED vendor courses available on this bench as local SHELLS — metadata
-	only, NO content copied: the content is served LIVE from the hub, embedded in-app
-	(`worgify_hub_url`). Free courses, plus paid courses granted after an offline deal.
-	Ungranted paid courses stay requestable. Idempotent. Admin-gated; daily + callable."""
+	"""Headless distribution: for each GRANTED vendor course, ensure a local course (a
+	metadata shell) + mirror its STRUCTURE as local chapter/lesson stubs (no content).
+	Lesson content is fetched LIVE at view time (`get_lesson_proxied`); nothing is copied.
+	Free courses + paid courses granted after a deal. Idempotent. Admin-gated; daily."""
 	if "System Manager" not in frappe.get_roles():
 		frappe.throw(_("Only an administrator can sync hub courses."), frappe.PermissionError)
 	if not _enabled():
 		return {"activated": [], "note": "distribution not configured / disabled"}
-	base = _public_base()  # browser-facing URL for the embedded player
 	activated = []
 	for hc in available_hub_courses():
 		cid = hc.get("course")
 		if not cid or not hc.get("granted"):
 			continue  # ungranted paid course -> requestable only
-		if frappe.db.exists("LMS Course", {HUB_ORIGIN_FIELD: cid}):
-			continue  # already shelled
-		if frappe.db.exists("LMS Course", cid):
-			local = cid  # adopt an already-present course (loopback); its content is ignored
-		else:
-			local = _create_shell(cid, hc)  # production: empty metadata-only shell
-		frappe.db.set_value("LMS Course", local, {
-			HUB_ORIGIN_FIELD: cid,
-			HUB_URL_FIELD: f"{base}/lms/courses/{cid}",
-			"published": 1,
-			# Hub courses are competency-bearing → a completion (pulled back) mints a
-			# local certificate. (db.set_value bypasses the read-only guard.)
-			"grants_training_certificate": 1,
-		})
-		activated.append(local)
+		local = frappe.db.get_value("LMS Course", {HUB_ORIGIN_FIELD: cid}, "name")
+		if not local:
+			local = cid if frappe.db.exists("LMS Course", cid) else _create_shell(cid, hc)
+			frappe.db.set_value("LMS Course", local, {
+				HUB_ORIGIN_FIELD: cid, "published": 1,
+				# competency-bearing → local completion mints a certificate
+				"grants_training_certificate": 1,
+			})
+		built = _build_structure(local, cid)  # idempotent (no-op if already built)
+		activated.append({"course": local, "lessons_built": built})
 	frappe.db.commit()
 	return {"activated": activated}
 
@@ -235,58 +277,34 @@ def request_hub_course(course):
 	return resp or {"ok": True}
 
 
-@frappe.whitelist()
-def get_hub_launch_url(course):
-	"""For a local hub-shell course, mint a per-learner token and return the hub SSO
-	launch URL to embed. The hub logs the current learner in and serves the live player.
-	Returns None when the course is not a hub course / distribution is off."""
+@frappe.whitelist(allow_guest=True)
+def get_lesson_proxied(course, chapter, lesson):
+	"""Override of `lms.lms.utils.get_lesson` (wired via override_whitelisted_methods).
+	Renders the lesson normally, but for a HUB course injects the content fetched LIVE
+	from the hub — the local stub has an empty body, so nothing is stored on this bench.
+	Falls back to the (empty) local lesson if the hub is unreachable."""
+	from lms.lms.utils import get_lesson as _orig_get_lesson
+
+	data = _orig_get_lesson(course, chapter, lesson)
+	if not isinstance(data, dict) or not data:
+		return data
 	origin = frappe.db.get_value("LMS Course", course, HUB_ORIGIN_FIELD)
-	if not origin or not _enabled():
-		return None
-	token = mint_token(course=origin, learner_email=frappe.session.user, ttl=600)
-	base = _public_base()
-	return f"{base}/api/method/academy.api.sso_launch?token={token}&course={origin}"
-
-
-@frappe.whitelist()
-def pull_hub_completions():
-	"""Pull completed hub-course enrolments back from the hub and turn each into local
-	competency evidence: mark the local shell enrolment complete + mint a local
-	LMS Certificate (→ Person-360 + MRB + Competency Overview). Idempotent; fail-soft.
-	Scheduled daily + callable."""
-	if not _enabled():
-		return {"minted": 0, "note": "distribution off"}
-	src = _source()
+	hub_lesson = data.get("name") and frappe.db.get_value("Course Lesson", data["name"], HUB_LESSON_FIELD)
+	if not origin or not hub_lesson or not _enabled():
+		return data
 	try:
-		data = _hub_get("academy.api.completions_since", {
-			"distribution_client": src.distribution_client,
-			"token": mint_token(ttl=120),
-			"cursor": src.last_cursor or "",
+		content = _hub_get("academy.api.lesson_content", {
+			"distribution_client": _source().distribution_client,
+			"token": mint_token(course=origin, ttl=120),
+			"course": origin, "lesson": hub_lesson,
 		})
+		for k in ("content", "body", "youtube", "quiz_id", "question", "file_type", "instructor_notes"):
+			if content.get(k) is not None:
+				data[k] = content.get(k)
 	except Exception:
-		frappe.log_error(title="worgify: completions pull failed", message=frappe.get_traceback())
-		return {"minted": 0}
-	from lms.worgify_competency import issue_completion_certificate
-
-	minted = 0
-	for row in data.get("completions", []):
-		email, hub_course = row.get("member"), row.get("course")
-		if not email or not hub_course:
-			continue
-		shell = frappe.db.get_value("LMS Course", {HUB_ORIGIN_FIELD: hub_course}, "name")
-		if not shell or not frappe.db.exists("User", email):
-			continue
-		if not frappe.db.exists("LMS Enrollment", {"member": email, "course": shell}):
-			frappe.get_doc({"doctype": "LMS Enrollment", "member": email, "course": shell}).insert(
-				ignore_permissions=True
-			)
-		frappe.db.set_value("LMS Enrollment", {"member": email, "course": shell}, "progress", 100)
-		if issue_completion_certificate(shell, email):
-			minted += 1
-	if data.get("cursor"):
-		frappe.db.set_value("Distribution Source", "Distribution Source", "last_cursor", data["cursor"])
-	frappe.db.commit()
-	return {"minted": minted, "cursor": data.get("cursor")}
+		frappe.log_error(title=f"worgify: live lesson fetch failed ({hub_lesson})",
+		                 message=frappe.get_traceback())
+	return data
 
 
 def guard_hub_course_edit(doc, method=None):
