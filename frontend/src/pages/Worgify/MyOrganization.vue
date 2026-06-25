@@ -4,8 +4,11 @@
 			<div>
 				<h1 class="text-2xl font-bold text-ink-gray-9">{{ org.organization_name }}</h1>
 				<p class="text-ink-gray-6 text-sm mt-1">
-					{{ __('Seats') }}: {{ org.seats_used }}<span v-if="org.max_seats"> / {{ org.max_seats }}</span>
-					· {{ (org.members || []).length }} {{ __('members') }}
+					<template v-if="!org.is_internal"
+						>{{ __('Seats') }}: {{ org.seats_used
+						}}<span v-if="org.max_seats"> / {{ org.max_seats }}</span> · </template
+					>{{ (org.members || []).length }}
+					{{ org.is_internal ? __('people in your workforce') : __('members') }}
 				</p>
 			</div>
 			<div v-if="org.join_code" class="text-right">
@@ -14,7 +17,7 @@
 			</div>
 		</div>
 
-		<section v-if="org.is_admin" class="border rounded-lg p-5 space-y-3">
+		<section v-if="org.is_admin && !org.is_internal" class="border rounded-lg p-5 space-y-3">
 			<h2 class="font-semibold text-ink-gray-9">{{ __('Invite an employee') }}</h2>
 			<div class="flex gap-2 items-end flex-wrap">
 				<FormControl type="text" :label="__('Email')" v-model="invite.email" class="min-w-56" />
@@ -52,19 +55,24 @@
 							<input type="checkbox" :checked="allSelected" @change="toggleAll" />
 						</th>
 						<th class="py-2 font-medium">{{ __('Name') }}</th>
-						<th class="font-medium">{{ __('Email') }}</th>
-						<th class="font-medium">{{ __('Role') }}</th>
+						<th class="font-medium">{{ org.is_internal ? __('Login') : __('Email') }}</th>
+						<th v-if="!org.is_internal" class="font-medium">{{ __('Role') }}</th>
 						<th class="font-medium">{{ __('Status') }}</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr v-for="m in org.members" :key="m.member" class="border-b last:border-0">
 						<td v-if="org.is_admin" class="py-2">
-							<input type="checkbox" :value="m.member" v-model="selected" />
+							<input
+								type="checkbox"
+								:value="m.member"
+								v-model="selected"
+								:disabled="org.is_internal && !m.has_login"
+							/>
 						</td>
 						<td class="py-2 text-ink-gray-8">{{ m.full_name || m.member }}</td>
-						<td class="text-ink-gray-6">{{ m.member }}</td>
-						<td class="text-ink-gray-7">
+						<td class="text-ink-gray-6">{{ org.is_internal && !m.has_login ? '—' : m.member }}</td>
+						<td v-if="!org.is_internal" class="text-ink-gray-7">
 							<select
 								v-if="org.is_admin"
 								:value="m.member_role"

@@ -269,13 +269,33 @@ def join_with_code(join_code):
 # ============================================================================
 @frappe.whitelist()
 def enroll_members(organization, course, members=None):
-	"""Company Admin: bulk-enroll members in a course. members=None -> all active
-	Learner+Admin members. Honours the seat pool (max_seats; 0 = unlimited)."""
-	_require_admin(organization)
+	"""Company Admin: bulk-enroll members in a course. CLIENT internal training enrols the
+	given Personnel users directly (no seat pool); HUB/B2B enrols Learning Organization
+	members honouring the seat pool (max_seats; 0 = unlimited)."""
 	if not frappe.db.exists("LMS Course", course):
 		frappe.throw(_("Course not found."))
 	if isinstance(members, str):
 		members = frappe.parse_json(members)
+	# CLIENT internal: the "organization" is the company; members are Personnel users.
+	if is_client() and frappe.db.exists("DocType", "Personnel") and not frappe.db.exists("Learning Organization", organization):
+		if not ({"System Manager", "Company Admin"} & set(frappe.get_roles())):
+			frappe.throw(_("Not permitted."), frappe.PermissionError)
+		if not members:
+			members = [p.user for p in frappe.get_all("Personnel", {"user": ["is", "set"]}, ["user"]) if p.user]
+		enrolled, already = [], []
+		for user in [m for m in members if frappe.db.exists("User", m)]:
+			if frappe.db.exists("LMS Enrollment", {"member": user, "course": course}):
+				already.append(user)
+				continue
+			frappe.get_doc({"doctype": "LMS Enrollment", "member": user, "course": course}).insert(
+				ignore_permissions=True
+			)
+			enrolled.append(user)
+		frappe.db.commit()
+		return {"enrolled": enrolled, "already_enrolled": already, "blocked_no_seats": [],
+		        "seats_used": None, "max_seats": None}
+	# HUB / B2B: Learning Organization with a seat pool.
+	_require_admin(organization)
 	org = frappe.get_doc("Learning Organization", organization)
 	if not members:
 		members = [m.member for m in org.members if m.status == "Active"]
@@ -307,10 +327,40 @@ def enroll_members(organization, course, members=None):
 	}
 
 
+def _internal_workforce():
+	"""CLIENT internal-training lens: the company IS the organization and its members ARE
+	the optisuites `Personnel` (the workforce) — the SAME population the Competency overview
+	shows. No join codes, no seat pool (you own the platform). Admins see the full roster."""
+	roles = set(frappe.get_roles())
+	can_admin = bool({"System Manager", "Company Admin"} & roles)
+	company = (frappe.defaults.get_global_default("company")
+	           or frappe.db.get_value("Company", {}, "name")
+	           or _("My organization"))
+	people = frappe.get_all("Personnel", fields=["name", "full_name", "user"], order_by="full_name asc")
+	members = [{
+		"member": p.user or p.name,
+		"personnel": p.name,
+		"full_name": p.full_name or p.name,
+		"member_role": "Member",
+		"status": "Active" if p.user else "No LMS login",
+		"has_login": bool(p.user),
+	} for p in people]
+	return {
+		"organization": company, "organization_name": company, "status": "Active",
+		"is_admin": can_admin, "is_internal": True,
+		"join_code": None, "max_seats": None, "seats_used": len(members),
+		"members": members if can_admin else [],
+	}
+
+
 @frappe.whitelist()
 def get_my_organization():
-	"""SPA 'My Organization': the org the current user administers (or belongs to),
-	with its members + seat usage."""
+	"""SPA 'My Organization'. CLIENT = internal training: the company + its Personnel
+	workforce (matches the Competency overview). HUB / B2B = the Learning Organization the
+	user administers or belongs to, with members + seat usage."""
+	# Internal-training lens (client + optisuites Personnel): one coherent population.
+	if is_client() and frappe.db.exists("DocType", "Personnel"):
+		return _internal_workforce()
 	user = frappe.session.user
 	org_name = None
 	admin = frappe.get_all("Learning Organization", filters={"admin_user": user}, pluck="name", limit=1)
