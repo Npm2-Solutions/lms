@@ -407,9 +407,21 @@ watch(
 		hubLaunchUrl.value = ''
 		if (isHub && embedOk && name) {
 			try {
-				hubLaunchUrl.value = await call('lms.worgify_federation.get_hub_launch_url', {
+				let url = await call('lms.worgify_federation.get_hub_launch_url', {
 					course: name,
 				})
+				// Single-tunnel: the hub is on the SAME port as the client (different
+				// hostname via nginx) — align the port to this page's.
+				if (url) {
+					try {
+						const u = new URL(url)
+						u.port = window.location.port
+						url = u.toString()
+					} catch {
+						/* keep url as-is */
+					}
+				}
+				hubLaunchUrl.value = url || ''
 			} catch {
 				hubLaunchUrl.value = ''
 			}

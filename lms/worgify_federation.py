@@ -44,6 +44,14 @@ def _source():
 	return frappe.get_cached_doc("Distribution Source")
 
 
+def _public_base():
+	"""Browser-facing hub base URL (what a learner's browser can reach — e.g. through a
+	tunnel / public domain). Falls back to the internal hub_base_url when unset (prod,
+	where server-to-server and browser use the same address)."""
+	src = _source()
+	return (getattr(src, "hub_public_url", None) or src.hub_base_url or "").rstrip("/")
+
+
 def _secret() -> str:
 	from frappe.utils.password import get_decrypted_password
 
@@ -162,7 +170,7 @@ def sync_hub_courses():
 		frappe.throw(_("Only an administrator can sync hub courses."), frappe.PermissionError)
 	if not _enabled():
 		return {"activated": [], "note": "distribution not configured / disabled"}
-	base = _source().hub_base_url.rstrip("/")
+	base = _public_base()  # browser-facing URL for the embedded player
 	activated = []
 	for hc in available_hub_courses():
 		cid = hc.get("course")
@@ -236,7 +244,7 @@ def get_hub_launch_url(course):
 	if not origin or not _enabled():
 		return None
 	token = mint_token(course=origin, learner_email=frappe.session.user, ttl=600)
-	base = _source().hub_base_url.rstrip("/")
+	base = _public_base()
 	return f"{base}/api/method/academy.api.sso_launch?token={token}&course={origin}"
 
 
