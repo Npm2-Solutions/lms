@@ -39,6 +39,10 @@ def _b64u(b: bytes) -> str:
 	return base64.urlsafe_b64encode(b).decode().rstrip("=")
 
 
+def _b64u_dec(s: str) -> bytes:
+	return base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))
+
+
 def _sign(payload_b64: str, secret: str) -> str:
 	return _b64u(hmac.new(secret.encode(), payload_b64.encode(), hashlib.sha256).digest())
 
@@ -95,6 +99,33 @@ def _is_client_bench() -> bool:
 	The markers are client-only Custom Fields, so on the HUB / plain LMS every override
 	and metering hook below MUST be inert (else they query a non-existent column → 1054)."""
 	return frappe.db.has_column("LMS Course", HUB_ORIGIN_FIELD)
+
+
+@frappe.whitelist()
+def apply_onboarding_token(token):
+	"""Client (System Manager): paste the vendor's onboarding token (from
+	academy.api.onboarding_token) to CONNECT this bench to the hub — auto-configures the
+	Distribution Source (hub URL + client id + shared secret), no manual secret copy, and
+	bootstraps the client-only marker fields. Returns the configured hub + client."""
+	if "System Manager" not in frappe.get_roles():
+		frappe.throw(_("Only an administrator can connect to the hub."), frappe.PermissionError)
+	try:
+		bundle = json.loads(_b64u_dec(token))
+		hub, client, secret = bundle["hub"], bundle["client"], bundle["secret"]
+		assert hub and client and secret
+	except Exception:
+		frappe.throw(_("Invalid onboarding token."))
+	src = frappe.get_single("Distribution Source")
+	src.hub_base_url = hub
+	src.distribution_client = client
+	src.shared_secret = secret
+	src.enabled = 1
+	src.save(ignore_permissions=True)
+	frappe.db.commit()
+	frappe.clear_cache(doctype="Distribution Source")
+	ensure_hub_origin_field()  # bootstrap the client-only markers on first connect
+	frappe.db.commit()
+	return {"hub_base_url": hub, "distribution_client": client}
 
 
 def _hub_get(method, params):
