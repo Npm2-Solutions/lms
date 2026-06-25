@@ -235,8 +235,11 @@ fixtures = ["Custom Field", "Function", "Industry", "LMS Category"]
 # ------------------------------
 #
 override_whitelisted_methods = {
-	# Worgify: headless content — inject hub lesson content live for hub courses.
+	# Worgify: headless content — inject hub lesson content / quiz live for hub courses.
 	"lms.lms.utils.get_lesson": "lms.worgify_federation.get_lesson_proxied",
+	"lms.lms.utils.get_quiz_with_questions": "lms.worgify_federation.get_quiz_with_questions_proxied",
+	"lms.lms.doctype.lms_quiz.lms_quiz.submit_quiz": "lms.worgify_federation.submit_quiz_proxied",
+	"lms.lms.doctype.lms_quiz.lms_quiz.check_answer": "lms.worgify_federation.check_answer_proxied",
 	# "frappe.desk.search.get_names_for_mentions": "lms.lms.utils.get_names_for_mentions",
 }
 #
