@@ -505,9 +505,10 @@ def check_answer_proxied(quiz, question, question_type, answers):
 # --- per-learner consumption metering (billing) -------------------------------
 
 
-def _report_hub_usage(course, learner, event):
+def _report_hub_usage(course, learner, usage_event):
 	"""Tell the hub a learner Enrolled/Completed a hub course, so the vendor can bill per
-	seat. Runs in a worker (enqueued after commit); fail-soft + idempotent on the hub."""
+	seat. Runs in a worker (enqueued after commit); fail-soft + idempotent on the hub.
+	(The kwarg is `usage_event`, not `event` — `event` is reserved by frappe.enqueue.)"""
 	if not _enabled():
 		return
 	origin = frappe.db.get_value("LMS Course", course, HUB_ORIGIN_FIELD)
@@ -517,18 +518,18 @@ def _report_hub_usage(course, learner, event):
 		_hub_get("academy.api.report_usage", {
 			"distribution_client": _source().distribution_client,
 			"token": mint_token(course=origin, ttl=120),
-			"course": origin, "learner": learner, "event": event,
+			"course": origin, "learner": learner, "event": usage_event,
 		})
 	except Exception:
-		frappe.log_error(title=f"worgify: usage report failed ({event} {course})",
+		frappe.log_error(title=f"worgify: usage report failed ({usage_event} {course})",
 		                 message=frappe.get_traceback())
 
 
-def _enqueue_usage(course, learner, event):
+def _enqueue_usage(course, learner, usage_event):
 	if not course or not learner or not frappe.db.get_value("LMS Course", course, HUB_ORIGIN_FIELD):
 		return  # not a hub course → nothing to meter
 	frappe.enqueue("lms.worgify_federation._report_hub_usage", queue="short",
-	               enqueue_after_commit=True, course=course, learner=learner, event=event)
+	               enqueue_after_commit=True, course=course, learner=learner, usage_event=usage_event)
 
 
 def on_hub_enrollment(doc, method=None):
