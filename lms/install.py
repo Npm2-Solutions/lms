@@ -20,6 +20,29 @@ def after_sync():
 def before_uninstall():
 	delete_custom_fields()
 	delete_lms_roles()
+	delete_navigation_records()
+
+
+def delete_navigation_records():
+	# frappe's remove_app leaves nav records behind (worgify fork addition).
+	# RAW db.delete on purpose: the ORM on_trash of standard nav docs in
+	# developer mode deletes the app's JSON files from the working tree.
+	for sidebar in frappe.get_all("Workspace Sidebar", filters={"app": "lms"}, pluck="name"):
+		frappe.db.delete("Workspace Sidebar Item", {"parent": sidebar})
+	frappe.db.delete("Workspace Sidebar", {"app": "lms"})
+	workspaces = frappe.get_all("Workspace", filters={"app": "lms"}, pluck="name")
+	for child in (
+		"Workspace Link",
+		"Workspace Chart",
+		"Workspace Shortcut",
+		"Workspace Quick List",
+		"Workspace Number Card",
+		"Workspace Custom Block",
+	):
+		if workspaces:
+			frappe.db.delete(child, {"parent": ["in", workspaces]})
+	frappe.db.delete("Workspace", {"app": "lms"})
+	frappe.db.delete("Desktop Icon", {"app": "lms"})
 
 
 def create_lms_roles():
