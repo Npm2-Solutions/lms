@@ -25,7 +25,7 @@
   },
   {
    "default": "Client",
-   "description": "Client = academy embedded in an optisuites bench (\"Training\"). Hub = standalone vendor academy (\"Worgify Academy\"). Admin-only.",
+   "description": "Client = academy embedded in an worgify bench (\"Training\"). Hub = standalone vendor academy (\"Worgify Academy\"). Admin-only.",
    "fieldname": "worgify_mode",
    "fieldtype": "Select",
    "in_list_view": 1,

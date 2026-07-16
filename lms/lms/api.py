@@ -348,9 +348,9 @@ def get_branding():
 	"""Get branding details."""
 	# Worgify Academy fork: the academy SPA carries its OWN brand, independent of the
 	# host site's Website Settings (on a client bench that is the PLATFORM brand,
-	# e.g. "Opti Suites"). Brand name/assets come from LMS Settings if set, else
+	# e.g. "Worgify"). Brand name/assets come from LMS Settings if set, else
 	# default to Worgify Academy. This is what lets the academy be branded distinctly
-	# from the optisuites platform it is embedded in.
+	# from the worgify platform it is embedded in.
 	image_fields = ["banner_image", "footer_logo", "favicon", "app_logo"]
 	settings = frappe._dict()
 	# Worgify Mode brand: resolved by the ADMIN-ONLY Worgify Settings single

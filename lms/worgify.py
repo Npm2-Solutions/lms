@@ -5,7 +5,7 @@
 ONE fork, ONE branch, mode-gated at runtime. The source of truth for the mode is
 the ADMIN-ONLY `Worgify Settings` single (System Manager perm only); it falls back
 to `site_config.worgify_mode`, then "client". Everything that must differ between
-the optisuites-embedded "Training" (client) and the standalone "Worgify Academy"
+the worgify-embedded "Training" (client) and the standalone "Worgify Academy"
 (hub) reads through here.
 """
 

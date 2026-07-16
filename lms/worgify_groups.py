@@ -5,12 +5,12 @@
 Companies are first-class: a `Learning Organization` owns its learners (employees),
 enrollment and billing are group-level. ONE fork, mode-gated:
 
-* CLIENT (optisuites): organizations mirror existing `Customer`s and members come
+* CLIENT (worgify): organizations mirror existing `Customer`s and members come
   from the Customer's portal users / `Personnel` — auto-synced, no registration.
 * HUB (standalone): companies self-register, employees join by invite or join-code,
   billing is a pool of seats (Stripe).
 
-All optisuites-specific reads are guarded so the module imports/runs on the hub too.
+All worgify-specific reads are guarded so the module imports/runs on the hub too.
 """
 
 import frappe
@@ -90,10 +90,10 @@ def _require_admin(organization):
 
 
 # ============================================================================
-# CLIENT auto-provision — mirror optisuites Customers as Learning Organizations
+# CLIENT auto-provision — mirror worgify Customers as Learning Organizations
 # ============================================================================
 def ensure_client_link_fields():
-	"""after_migrate (client only): guarded Link fields to optisuites Customer/Personnel.
+	"""after_migrate (client only): guarded Link fields to worgify Customer/Personnel.
 	No-op on the hub (those doctypes don't exist)."""
 	if not frappe.db.exists("DocType", "Customer"):
 		return
@@ -132,7 +132,7 @@ def _customer_portal_user_rows(customer):
 
 
 def sync_organizations_from_customers():
-	"""after_migrate (client only): mirror each optisuites Customer as a Learning
+	"""after_migrate (client only): mirror each worgify Customer as a Learning
 	Organization (idempotent); seed members from the Customer's enabled portal users,
 	resolved to Personnel where possible. No-op on the hub."""
 	if not is_client() or not frappe.db.exists("DocType", "Customer"):
@@ -329,7 +329,7 @@ def enroll_members(organization, course, members=None):
 
 def _internal_workforce():
 	"""CLIENT internal-training lens: the company IS the organization and its members ARE
-	the optisuites `Personnel` (the workforce) — the SAME population the Competency overview
+	the worgify `Personnel` (the workforce) — the SAME population the Competency overview
 	shows. No join codes, no seat pool (you own the platform). Admins see the full roster."""
 	roles = set(frappe.get_roles())
 	can_admin = bool({"System Manager", "Company Admin"} & roles)
@@ -358,7 +358,7 @@ def get_my_organization():
 	"""SPA 'My Organization'. CLIENT = internal training: the company + its Personnel
 	workforce (matches the Competency overview). HUB / B2B = the Learning Organization the
 	user administers or belongs to, with members + seat usage."""
-	# Internal-training lens (client + optisuites Personnel): one coherent population.
+	# Internal-training lens (client + worgify Personnel): one coherent population.
 	if is_client() and frappe.db.exists("DocType", "Personnel"):
 		return _internal_workforce()
 	user = frappe.session.user

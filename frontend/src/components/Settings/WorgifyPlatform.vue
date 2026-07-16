@@ -8,7 +8,7 @@
 			<div>
 				<div class="text-p-base font-medium text-ink-gray-7 mb-1">{{ __('Platform Mode') }}</div>
 				<div class="text-p-sm text-ink-gray-5 mb-3">
-					{{ __('Client = embedded "Training" inside an optisuites bench. Hub = standalone "Worgify Academy".') }}
+					{{ __('Client = embedded "Training" inside an worgify bench. Hub = standalone "Worgify Academy".') }}
 				</div>
 				<div class="flex gap-3">
 					<Button

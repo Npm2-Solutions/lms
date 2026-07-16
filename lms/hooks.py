@@ -80,9 +80,9 @@ after_migrate = [
 	# Worgify Academy: ensure the role set (Company Admin, …).
 	"lms.worgify.ensure_worgify_roles",
 	# Worgify Academy competency bridge — adds the guarded `personnel` link to LMS
-	# Certificate (client benches with optisuites only; no-op on the hub).
+	# Certificate (client benches with worgify only; no-op on the hub).
 	"lms.worgify_competency.ensure_competency_fields",
-	# Worgify Academy group layer — mirror optisuites Customers as Learning
+	# Worgify Academy group layer — mirror worgify Customers as Learning
 	# Organizations + seed members from portal users (client only; no-op on the hub).
 	"lms.worgify_groups.sync_organizations_from_customers",
 	# Worgify Academy — ensure the "from hub" marker on LMS Course (distribution).
@@ -166,10 +166,10 @@ doc_events = {
 
 # Worgify Academy — cross-app integration (Design 11)
 # ---------------------------------------------------
-# Consumed by optisuites (Person-360) and recordbook (MRB dossier) WHEN PRESENT;
+# Consumed by worgify (Person-360) and recordbook (MRB dossier) WHEN PRESENT;
 # absent consumers simply ignore these, so the fork stays standalone (hub) too.
 
-# Surface issued training certificates into the optisuites Personnel 360 view.
+# Surface issued training certificates into the worgify Personnel 360 view.
 personnel_role_profiles = [
 	{
 		"doctype": "LMS Certificate",

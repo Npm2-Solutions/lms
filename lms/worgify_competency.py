@@ -2,10 +2,10 @@
 # License: AGPLv3
 """Worgify Academy — competency bridge (Design 11), folded INTO the fork.
 
-ONE branch, mode-gated: this bridge is active on a CLIENT bench (optisuites present)
-and INERT on the HUB (no optisuites) via guarded imports — never two branches.
+ONE branch, mode-gated: this bridge is active on a CLIENT bench (worgify present)
+and INERT on the HUB (no worgify) via guarded imports — never two branches.
 
-It surfaces LMS training certificates as competency evidence into the optisuites
+It surfaces LMS training certificates as competency evidence into the worgify
 Person-360 and the recordbook dossier (MRB), mapping the LMS member (User) -> the
 canonical Personnel. No separate Personnel-linked doctype is shipped (that would
 break the hub); we add a guarded `personnel` Custom Field to LMS Certificate only
@@ -17,11 +17,11 @@ import frappe
 
 def _personnel_for_user(user):
 	"""Map an LMS member (User) -> Personnel, or None. Guarded: returns None when
-	optisuites is absent (the hub) so nothing breaks."""
+	worgify is absent (the hub) so nothing breaks."""
 	if not user or user == "Guest":
 		return None
 	try:
-		from optisuites.personnel.api import get_personnel_for_user
+		from worgify.personnel.api import get_personnel_for_user
 	except ImportError:
 		return None
 	return get_personnel_for_user(user)
@@ -29,7 +29,7 @@ def _personnel_for_user(user):
 
 def ensure_competency_fields():
 	"""after_migrate hook: add the `personnel` link to LMS Certificate, but ONLY on a
-	bench that has optisuites (Personnel). No-op on the hub, so the fork stays
+	bench that has worgify (Personnel). No-op on the hub, so the fork stays
 	standalone-deployable."""
 	if not frappe.db.exists("DocType", "Personnel"):
 		return
@@ -45,7 +45,7 @@ def ensure_competency_fields():
 					"options": "Personnel",
 					"insert_after": "member",
 					"read_only": 1,
-					"description": "Competency owner (optisuites Personnel), stamped from the LMS member.",
+					"description": "Competency owner (worgify Personnel), stamped from the LMS member.",
 				}
 			]
 		},
