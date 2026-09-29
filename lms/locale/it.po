@@ -477,7 +477,7 @@ msgstr "Articoli applicabili"
 
 #: frontend/src/pages/JobApplications.vue:24
 msgid "Application"
-msgstr "Candidatura"
+msgstr "Applicazione"
 
 #. Label of a field in the job-opportunity Web Form
 #: lms/job/web_form/job_opportunity/job_opportunity.json
@@ -487,7 +487,7 @@ msgstr "Link al modulo di domanda"
 #: frontend/src/pages/JobApplications.vue:13
 #: frontend/src/pages/JobApplications.vue:25
 msgid "Applications"
-msgstr "Candidature"
+msgstr "Applicazioni"
 
 #: frontend/src/pages/JobApplications.vue:347
 msgid "Applied On"
@@ -623,7 +623,7 @@ msgstr "Assegnato per"
 #: lms/lms/doctype/lms_assignment_submission/lms_assignment_submission.json
 #: lms/templates/assignment.html:3
 msgid "Assignment"
-msgstr "Incarico"
+msgstr "Assegnazione"
 
 #. Label of the assignment_attachment (Attach) field in DocType 'LMS Assignment
 #. Submission'
@@ -913,7 +913,7 @@ msgstr "Nome gruppo"
 #. Settings'
 #: lms/lms/doctype/lms_settings/lms_settings.json
 msgid "Batch Settings"
-msgstr "Impostazioni gruppo"
+msgstr "Impostazioni lotto"
 
 #: frontend/src/pages/Batches/BatchForm.vue:28
 msgid "Batch Start Date"
@@ -1060,7 +1060,7 @@ msgstr "Acquista questo corso"
 
 #: lms/templates/emails/lms_message.html:11
 msgid "By"
-msgstr "Di"
+msgstr "Da"
 
 #. Option for the 'Grade Type' (Select) field in DocType 'Education Detail'
 #: lms/lms/doctype/education_detail/education_detail.json
@@ -1371,7 +1371,7 @@ msgstr "Classe:"
 #: frontend/src/components/Controls/MultiLink.vue:63
 #: frontend/src/components/Controls/MultiLink.vue:66
 msgid "Clear"
-msgstr "Sereno"
+msgstr "Cancella"
 
 #. Option for the 'Role Preference' (Select) field in DocType 'User'
 #: lms/fixtures/custom_field.json
@@ -1404,7 +1404,7 @@ msgstr "Client Secret"
 
 #: frontend/src/components/Settings/Categories.vue:27
 msgid "Close"
-msgstr "Vicino"
+msgstr "Chiudi"
 
 #: frontend/src/pages/Courses/CourseDetail.vue:87
 msgid "Close preview"
@@ -2104,7 +2104,7 @@ msgstr "Immagine di copertina"
 #: frontend/src/pages/Programs/Programs.vue:15
 #: frontend/src/pages/Quizzes.vue:11
 msgid "Create"
-msgstr "Creare"
+msgstr "Crea"
 
 #: lms/lms/doctype/lms_certificate_evaluation/lms_certificate_evaluation.js:7
 msgid "Create Certificate"
@@ -2327,7 +2327,7 @@ msgstr "Tipo di titolo di studio"
 #: frontend/src/pages/Programs/ProgramForm.vue:230
 #: frontend/src/pages/Programs/ProgramForm.vue:567
 msgid "Delete"
-msgstr "Eliminare"
+msgstr "Elimina"
 
 #: frontend/src/components/ChapterRow.vue:41
 msgid "Delete Chapter"
@@ -2453,7 +2453,7 @@ msgstr "Disabilitato"
 #: frontend/src/components/DiscussionReplies.vue:57
 #: lms/lms/widgets/NoPreviewModal.html:25
 msgid "Discard"
-msgstr "Annulla"
+msgstr "Scarta"
 
 #: frontend/src/components/Settings/Coupons/CouponList.vue:173
 #: frontend/src/pages/Billing.vue:41
@@ -3142,7 +3142,7 @@ msgstr "Esplora altro"
 
 #: frontend/src/pages/Courses/CourseForm.vue:225
 msgid "Export"
-msgstr "Esportare"
+msgstr "Esporta"
 
 #. Option for the 'Status' (Select) field in DocType 'LMS Assignment
 #. Submission'
@@ -3152,7 +3152,7 @@ msgstr "Esportare"
 #: lms/lms/doctype/lms_assignment_submission/lms_assignment_submission.json
 #: lms/lms/doctype/lms_certificate_evaluation/lms_certificate_evaluation.json
 msgid "Fail"
-msgstr "Errore"
+msgstr "Non superato"
 
 #. Option for the 'Status' (Select) field in DocType 'LMS Programming Exercise
 #. Submission'
@@ -3939,7 +3939,7 @@ msgstr "Data di emissione"
 
 #: frontend/src/components/Sidebar/AppSidebar.vue:626
 msgid "Issue a Certificate"
-msgstr "Rilascia un certificato"
+msgstr "Emetti un certificato"
 
 #: frontend/src/pages/Courses/CoursePublishSettings.vue:60
 #: frontend/src/pages/Courses/CoursePublishSettings.vue:73
@@ -3956,13 +3956,13 @@ msgstr "Rilascia certificati ai partecipanti del gruppo."
 #: frontend/src/pages/Courses/CourseCertification.vue:27
 #: lms/lms/doctype/lms_badge_assignment/lms_badge_assignment.json
 msgid "Issued On"
-msgstr "Rilasciato il"
+msgstr "Emesso il"
 
 #: frontend/src/pages/ProfileAbout.vue:75
 #: frontend/src/pages/ProfileCertificates.vue:20
 #: lms/templates/certificates_section.html:11
 msgid "Issued on"
-msgstr "Rilasciato il"
+msgstr "Emesso il"
 
 #. Label of the items_in_sidebar_section (Section Break) field in DocType 'LMS
 #. Settings'
@@ -3984,7 +3984,7 @@ msgstr "JavaScript"
 #: frontend/src/pages/Search/Search.vue:237
 #: lms/job/doctype/lms_job_application/lms_job_application.json
 msgid "Job"
-msgstr "Lavoro"
+msgstr "Commessa"
 
 #: frontend/src/pages/JobForm.vue:20
 msgid "Job Details"
@@ -4008,7 +4008,7 @@ msgstr "Opportunità di lavoro"
 #: lms/job/doctype/lms_job_application/lms_job_application.json
 #: lms/job/web_form/job_opportunity/job_opportunity.json
 msgid "Job Title"
-msgstr "Titolo del lavoro"
+msgstr "Titolo commessa"
 
 #. Label of the jobs (Check) field in DocType 'LMS Settings'
 #. Label of the jobs_tab (Tab Break) field in DocType 'LMS Settings'
@@ -4017,7 +4017,7 @@ msgstr "Titolo del lavoro"
 #: frontend/src/pages/Jobs.vue:342
 #: lms/lms/doctype/lms_settings/lms_settings.json
 msgid "Jobs"
-msgstr "Lavori"
+msgstr "Commesse"
 
 #: frontend/src/pages/Batches/components/LiveClass.vue:86
 #: frontend/src/pages/Home/AdminHome.vue:89
@@ -4148,7 +4148,7 @@ msgstr "Elemento Coupon LMS"
 #: lms/lms/doctype/lms_course/lms_course.json
 #: lms/lms/doctype/lms_payment/lms_payment.json
 msgid "LMS Course"
-msgstr "LMS Course"
+msgstr "Corso LMS"
 
 #. Name of a DocType
 #: lms/lms/doctype/lms_course_interest/lms_course_interest.json
@@ -4629,7 +4629,7 @@ msgstr "Assegnazione manuale"
 
 #: frontend/src/components/Quiz.vue:132
 msgid "Mark"
-msgstr "Voto"
+msgstr "Marca"
 
 #: frontend/src/pages/Notifications.vue:12
 msgid "Mark all as read"
@@ -5688,7 +5688,7 @@ msgstr "Parzialmente completato"
 #: lms/lms/doctype/lms_assignment_submission/lms_assignment_submission.json
 #: lms/lms/doctype/lms_certificate_evaluation/lms_certificate_evaluation.json
 msgid "Pass"
-msgstr "Riuscito"
+msgstr "Superato"
 
 #. Option for the 'Status' (Select) field in DocType 'LMS Programming Exercise
 #. Submission'
@@ -5731,7 +5731,7 @@ msgstr "Paese di pagamento"
 #: frontend/src/components/Settings/Transactions/TransactionDetails.vue:89
 #: lms/lms/doctype/lms_payment/lms_payment.json
 msgid "Payment Details"
-msgstr "Dettagli pagamento"
+msgstr "Dettagli di pagamento"
 
 #: frontend/src/components/Settings/Transactions/TransactionDetails.vue:41
 msgid "Payment For Certificate"
@@ -6105,7 +6105,7 @@ msgstr "Pubblica"
 
 #: frontend/src/pages/Billing.vue:149
 msgid "Postal Code"
-msgstr "Codice postale"
+msgstr "CAP"
 
 #: frontend/src/components/Sidebar/AppSidebar.vue:204
 msgid "Powered by Frappe Learning"
@@ -6723,7 +6723,7 @@ msgstr "Le righe {0} contengono domande duplicate."
 
 #: frontend/src/pages/ProgrammingExercises/ProgrammingExerciseSubmission.vue:59
 msgid "Run"
-msgstr "Esegui"
+msgstr "Passata"
 
 #: frontend/src/pages/ProgrammingExercises/ProgrammingExerciseSubmission.vue:59
 msgid "Running"
@@ -7259,7 +7259,7 @@ msgstr "Personale"
 #: frontend/src/pages/Home/AdminHome.vue:81
 #: frontend/src/pages/Home/StudentHome.vue:46
 msgid "Start"
-msgstr "Inizia"
+msgstr "Avvia"
 
 #. Label of the start_date (Date) field in DocType 'Education Detail'
 #. Label of the start_date (Date) field in DocType 'LMS Batch'
@@ -7407,7 +7407,7 @@ msgstr "Gli studenti saranno iscritti a un gruppo a pagamento una volta completa
 #: frontend/src/pages/Batches/components/AnnouncementModal.vue:19
 #: frontend/src/pages/JobApplications.vue:138
 msgid "Subject"
-msgstr "Soggetto"
+msgstr "Oggetto"
 
 #: frontend/src/pages/Batches/components/AnnouncementModal.vue:98
 #: frontend/src/pages/JobApplications.vue:294
@@ -7579,7 +7579,7 @@ msgstr "Lavoro di squadra"
 #: frontend/src/pages/Batches/components/BulkCertificates.vue:43
 #: lms/lms/doctype/lms_certificate/lms_certificate.json
 msgid "Template"
-msgstr "Modelli"
+msgstr "Modello"
 
 #: lms/lms/user.py:42
 msgid "Temporarily Disabled"
@@ -8021,7 +8021,7 @@ msgstr "Transazione aggiornata con successo"
 #. Option for the 'Location Preference' (Select) field in DocType 'User'
 #: lms/fixtures/custom_field.json
 msgid "Travel"
-msgstr "Viaggi"
+msgstr "Trasferta"
 
 #: frontend/src/components/Quiz.vue:362
 msgid "Try Again"
@@ -8167,7 +8167,7 @@ msgstr "Ruolo non strutturato"
 #: lms/lms/doctype/lms_certificate_request/lms_certificate_request.json
 #: lms/lms/doctype/lms_course/lms_course.json
 msgid "Upcoming"
-msgstr "In arrivo"
+msgstr "Prossimi"
 
 #: frontend/src/pages/Home/AdminHome.vue:141
 msgid "Upcoming Batches"
@@ -9186,7 +9186,7 @@ msgstr "{0} quiz"
 
 #: lms/lms/api.py:856 lms/lms/api.py:864
 msgid "{0} Settings not found"
-msgstr "{0} impostazioni non trovate"
+msgstr "Impostazioni {0} non trovate"
 
 #: frontend/src/pages/ProgrammingExercises/ProgrammingExerciseSubmissions.vue:12
 msgid "{0} Submissions"
@@ -9406,7 +9406,7 @@ msgid "Connecting to the hub…"
 msgstr "Connessione all'hub…"
 
 msgid "Contact Email"
-msgstr "Email contatto"
+msgstr "Email di contatto"
 
 msgid "Could not change the role."
 msgstr "Impossibile cambiare il ruolo."
