@@ -7352,7 +7352,7 @@ msgstr "Statistiche"
 #: lms/lms/doctype/lms_programming_exercise_submission/lms_programming_exercise_submission.json
 #: lms/lms/doctype/lms_test_case_submission/lms_test_case_submission.json
 msgid "Status"
-msgstr "Stati"
+msgstr "Stato"
 
 #: frontend/src/pages/Batches/components/Assessments.vue:221
 msgid "Status/Percentage"
@@ -9278,3 +9278,606 @@ msgstr "{} superati"
 msgid "{} Published"
 msgstr "{} pubblicati"
 
+
+msgid "0 = unlimited."
+msgstr "0 = illimitato."
+
+msgid "Active"
+msgstr "Attivo"
+
+msgid "Administrator email"
+msgstr "Email dell'amministratore"
+
+msgid "Administrator full name"
+msgstr "Nome completo dell'amministratore"
+
+msgid "All fields are required."
+msgstr "Tutti i campi sono obbligatori."
+
+msgid "Allow this badge to be awarded to learners."
+msgstr "Consenti l'assegnazione di questo badge ai discenti."
+
+msgid "Appears in the left sidebar. Recommended size is 32x32 px in PNG or SVG"
+msgstr "Appare nella barra laterale sinistra. Dimensione consigliata 32x32 px in PNG o SVG"
+
+msgid "Appears next to the title in your browser tab. Recommended size is 32x32 px in PNG or ICO"
+msgstr "Appare accanto al titolo nella scheda del browser. Dimensione consigliata 32x32 px in PNG o ICO"
+
+msgid "Automatic (Stripe) Billing (Hub)"
+msgstr "Fatturazione automatica (Stripe) (Hub)"
+
+msgid "Available from hub"
+msgstr "Disponibile dall'hub"
+
+msgid "Base URL of the Worgify Academy hub, e.g. https://academy.worgify.com"
+msgstr "URL di base dell'hub Worgify Academy, es. https://academy.worgify.com"
+
+msgid "Brand Logo"
+msgstr "Logo brand"
+
+msgid "Brand Name"
+msgstr "Nome del brand"
+
+msgid "Brand Name (override)"
+msgstr "Nome del brand (sostituzione)"
+
+msgid "Brand Settings"
+msgstr "Impostazioni del brand"
+
+msgid "Certificate validity (months) — 0 = no expiry"
+msgstr "Validità del certificato (mesi) — 0 = nessuna scadenza"
+
+msgid "Choose a payment provider to configure its credentials."
+msgstr "Scegli un fornitore di pagamento per configurarne le credenziali."
+
+msgid "Client"
+msgstr "Cliente"
+
+msgid "Client = academy embedded in an worgify bench (\"Training\"). Hub = standalone vendor academy (\"Worgify Academy\"). Admin-only."
+msgstr "Client = academy integrata in un bench worgify (\"Training\"). Hub = academy autonoma del fornitore (\"Worgify Academy\"). Solo amministratore."
+
+msgid "Client = embedded \"Training\" inside an worgify bench. Hub = standalone \"Worgify Academy\"."
+msgstr "Client = \"Training\" integrato in un bench worgify. Hub = \"Worgify Academy\" autonoma."
+
+msgid "Client · Training"
+msgstr "Client · Training"
+
+msgid "Company Admin"
+msgstr "Amministratore aziendale"
+
+msgid "Company Self-Signup (Hub)"
+msgstr "Auto-registrazione aziende (Hub)"
+
+msgid "Company name"
+msgstr "Nome dell'azienda"
+
+msgid "Company registered"
+msgstr "Azienda registrata"
+
+msgid "Company registration is not available on this platform."
+msgstr "La registrazione delle aziende non è disponibile su questa piattaforma."
+
+msgid "Company self-registration is not enabled."
+msgstr "L'auto-registrazione delle aziende non è abilitata."
+
+msgid "Competency"
+msgstr "Competenza"
+
+msgid "Competency / MRB Bridge (Client)"
+msgstr "Ponte competenze / MRB (Client)"
+
+msgid "Competency Overview"
+msgstr "Panoramica competenze"
+
+msgid "Competency Tags"
+msgstr "Tag di competenza"
+
+msgid "Competency tags"
+msgstr "Tag di competenza"
+
+msgid "Competency-bearing course"
+msgstr "Corso che attesta una competenza"
+
+msgid "Configure the credentials and options for this payment gateway."
+msgstr "Configura le credenziali e le opzioni di questo gateway di pagamento."
+
+msgid "Configure your Brand Name, Logo, and Favicon"
+msgstr "Configura nome del brand, logo e favicon"
+
+msgid "Connect"
+msgstr "Connetti"
+
+msgid "Connect a Google Meet account to schedule and host live classes."
+msgstr "Collega un account Google Meet per pianificare e tenere classi dal vivo."
+
+msgid "Connect a Zoom account to schedule and host live classes."
+msgstr "Collega un account Zoom per pianificare e tenere classi dal vivo."
+
+msgid "Connect to Hub"
+msgstr "Connetti all'hub"
+
+msgid "Connect to the Worgify hub"
+msgstr "Connetti all'hub Worgify"
+
+msgid "Connected to {0} as {1}"
+msgstr "Connesso a {0} come {1}"
+
+msgid "Connecting to the hub…"
+msgstr "Connessione all'hub…"
+
+msgid "Contact Email"
+msgstr "Email contatto"
+
+msgid "Could not change the role."
+msgstr "Impossibile cambiare il ruolo."
+
+msgid "Could not enrol members."
+msgstr "Impossibile iscrivere i membri."
+
+msgid "Could not invite the employee."
+msgstr "Impossibile invitare il dipendente."
+
+msgid "Could not join — check the code."
+msgstr "Impossibile unirsi — controlla il codice."
+
+msgid "Could not register the company."
+msgstr "Impossibile registrare l'azienda."
+
+msgid "Could not save the record."
+msgstr "Impossibile salvare il record."
+
+msgid "Could not send the request to the hub. Try again."
+msgstr "Impossibile inviare la richiesta all'hub. Riprova."
+
+msgid "Could not update the feature."
+msgstr "Impossibile aggiornare la funzionalità."
+
+msgid "Could not update the mode."
+msgstr "Impossibile aggiornare la modalità."
+
+msgid "Course Marketplace / Sales (Hub)"
+msgstr "Marketplace / vendita corsi (Hub)"
+
+msgid "Course distribution is not configured on this bench."
+msgstr "La distribuzione dei corsi non è configurata su questo bench."
+
+msgid "Course not found."
+msgstr "Corso non trovato."
+
+msgid "Create and manage reusable email templates for your notifications."
+msgstr "Crea e gestisci modelli email riutilizzabili per le tue notifiche."
+
+msgid "Create your organization and an administrator account. You can then invite employees and enrol them in courses."
+msgstr "Crea la tua organizzazione e un account amministratore. Potrai poi invitare i dipendenti e iscriverli ai corsi."
+
+msgid "Current brand"
+msgstr "Brand attuale"
+
+msgid "Define a badge and the criteria for awarding it to learners."
+msgstr "Definisci un badge e i criteri per assegnarlo ai discenti."
+
+msgid "Delete user"
+msgstr "Elimina utente"
+
+msgid "Delete {0}?"
+msgstr "Eliminare {0}?"
+
+msgid "Distribution Client ID"
+msgstr "ID client di distribuzione"
+
+msgid "Distribution Source"
+msgstr "Origine della distribuzione"
+
+msgid "Distribution to Client Benches (Hub)"
+msgstr "Distribuzione ai bench client (Hub)"
+
+msgid "Edit Member"
+msgstr "Modifica membro"
+
+msgid "Edit member"
+msgstr "Modifica membro"
+
+msgid "Email is required."
+msgstr "L'email è obbligatoria."
+
+msgid "Employees self-register into this organization using this code."
+msgstr "I dipendenti si registrano autonomamente in questa organizzazione con questo codice."
+
+msgid "Enrol all active"
+msgstr "Iscrivi tutti gli attivi"
+
+msgid "Enrol members in a course"
+msgstr "Iscrivi membri a un corso"
+
+msgid "Enrol selected ({0})"
+msgstr "Iscrivi i selezionati ({0})"
+
+msgid "Enrolled {0}, already enrolled {1}, blocked (no seats) {2}. Seats used {3}."
+msgstr "Iscritti {0}, già iscritti {1}, bloccati (posti esauriti) {2}. Posti usati {3}."
+
+msgid "Enter Brand Name"
+msgstr "Inserisci il nome del brand"
+
+msgid "Evidence (PDF / scan)"
+msgstr "Evidenza (PDF / scansione)"
+
+msgid "Expiry"
+msgstr "Scadenza"
+
+msgid "Expiry date"
+msgstr "Data di scadenza"
+
+msgid "External Training Record"
+msgstr "Registro formazione esterna"
+
+msgid "External competencies"
+msgstr "Competenze esterne"
+
+msgid "Favicon"
+msgstr "Favicon"
+
+msgid "Features"
+msgstr "Funzionalità"
+
+msgid "Federation Enabled"
+msgstr "Federazione abilitata"
+
+msgid "Full name"
+msgstr "Nome completo"
+
+msgid "Go back"
+msgstr "Torna indietro"
+
+msgid "Go to sign in"
+msgstr "Vai all'accesso"
+
+msgid "HS256 secret for enrol tokens; must match the hub's Distribution Client secret."
+msgstr "Segreto HS256 per i token di iscrizione; deve coincidere con il segreto del Distribution Client dell'hub."
+
+msgid "Hub"
+msgstr "Hub"
+
+msgid "Hub Base URL"
+msgstr "URL di base dell'hub"
+
+msgid "Hub · Worgify Academy"
+msgstr "Hub · Worgify Academy"
+
+msgid "Install Worgify Academy"
+msgstr "Installa Worgify Academy"
+
+msgid "Invalid file path"
+msgstr "Percorso file non valido"
+
+msgid "Invalid join code."
+msgstr "Codice di adesione non valido."
+
+msgid "Invalid member role."
+msgstr "Ruolo del membro non valido."
+
+msgid "Invalid mode."
+msgstr "Modalità non valida."
+
+msgid "Invalid onboarding token."
+msgstr "Token di onboarding non valido."
+
+msgid "Invalid role filter."
+msgstr "Filtro ruolo non valido."
+
+msgid "Invalid search query."
+msgstr "Query di ricerca non valida."
+
+msgid "Invite"
+msgstr "Invita"
+
+msgid "Invite an employee"
+msgstr "Invita un dipendente"
+
+msgid "Invited"
+msgstr "Invitato"
+
+msgid "Issue date"
+msgstr "Data di emissione"
+
+msgid "Issued"
+msgstr "Emesso"
+
+msgid "Issuing Body"
+msgstr "Ente emittente"
+
+msgid "Issuing body"
+msgstr "Ente emittente"
+
+msgid "Join Code"
+msgstr "Codice di adesione"
+
+msgid "Join code"
+msgstr "Codice di adesione"
+
+msgid "Joined On"
+msgstr "Aderito il"
+
+msgid "Last Results Cursor"
+msgstr "Ultimo cursore dei risultati"
+
+msgid "Learner"
+msgstr "Discente"
+
+msgid "Learning Organization"
+msgstr "Organizzazione formativa"
+
+msgid "Learning Organization Member"
+msgstr "Membro dell'organizzazione formativa"
+
+msgid "Leave a flag unticked to use the per-mode default."
+msgstr "Lascia un flag non spuntato per usare il valore predefinito della modalità."
+
+msgid "Loading…"
+msgstr "Caricamento…"
+
+msgid "Manage the organization: members, group enrolments, and seats"
+msgstr "Gestisci l'organizzazione: membri, iscrizioni di gruppo e posti"
+
+msgid "Max Seats"
+msgstr "Posti massimi"
+
+msgid "Member not found in this organization."
+msgstr "Membro non trovato in questa organizzazione."
+
+msgid "Member updated"
+msgstr "Membro aggiornato"
+
+msgid "My organization"
+msgstr "La mia organizzazione"
+
+msgid "No competency-bearing courses yet. Mark a course \"Competency-bearing\" in its Settings tab."
+msgstr "Ancora nessun corso che attesta una competenza. Contrassegna un corso come \"Competency-bearing\" nella sua scheda Impostazioni."
+
+msgid "No members to show."
+msgstr "Nessun membro da mostrare."
+
+msgid "No members yet."
+msgstr "Ancora nessun membro."
+
+msgid "No paid hub courses to request right now."
+msgstr "Nessun corso a pagamento dell'hub da richiedere al momento."
+
+msgid "Not permitted."
+msgstr "Non consentito."
+
+msgid "OS Base Reader"
+msgstr "OS Base Reader"
+
+msgid "Off"
+msgstr "Off"
+
+msgid "On"
+msgstr "On"
+
+msgid "On completion, record a competency certificate for the learner — surfaced in Personnel 360 and the MRB dossier."
+msgstr "Al completamento, registra un certificato di competenza per il discente — visibile in Personnel 360 e nel dossier MRB."
+
+msgid "Onboarding token"
+msgstr "Token di onboarding"
+
+msgid "Only an administrator can change features."
+msgstr "Solo un amministratore può modificare le funzionalità."
+
+msgid "Only an administrator can change the platform mode."
+msgstr "Solo un amministratore può cambiare la modalità della piattaforma."
+
+msgid "Only an administrator can connect to the hub."
+msgstr "Solo un amministratore può connettersi all'hub."
+
+msgid "Only an administrator can request courses."
+msgstr "Solo un amministratore può richiedere corsi."
+
+msgid "Only an administrator can sync hub courses."
+msgstr "Solo un amministratore può sincronizzare i corsi dell'hub."
+
+msgid "Optisuites Customer"
+msgstr "Cliente Optisuites"
+
+msgid "Organization Name"
+msgstr "Nome dell'organizzazione"
+
+msgid "Organization name, admin name and admin email are required."
+msgstr "Nome dell'organizzazione, nome e email dell'amministratore sono obbligatori."
+
+msgid "Overrides the per-mode default (Client → Training, Hub → Worgify Academy)."
+msgstr "Sostituisce il valore predefinito della modalità (Client → Training, Hub → Worgify Academy)."
+
+msgid "Paid courses from the Worgify Academy hub. Request access and we will get in touch — free courses appear directly among your courses."
+msgstr "Corsi a pagamento dall'hub Worgify Academy. Richiedi l'accesso e ti contatteremo — i corsi gratuiti compaiono direttamente tra i tuoi corsi."
+
+msgid "Paid · on request"
+msgstr "A pagamento · su richiesta"
+
+msgid "Paste the onboarding token your training provider gave you. It configures the hub URL, client id and shared secret automatically."
+msgstr "Incolla il token di onboarding che ti ha fornito il tuo ente di formazione. Configura automaticamente l'URL dell'hub, l'ID client e il segreto condiviso."
+
+msgid "Person"
+msgstr "Persona"
+
+msgid "Personnel"
+msgstr "Personale"
+
+msgid "Personnel, title and issue date are required."
+msgstr "Personale, titolo e data di emissione sono obbligatori."
+
+msgid "Platform"
+msgstr "Piattaforma"
+
+msgid "Platform Mode"
+msgstr "Modalità della piattaforma"
+
+msgid "Platform mode and features. Administrator only."
+msgstr "Modalità e funzionalità della piattaforma. Solo amministratore."
+
+msgid "Please sign in first."
+msgstr "Accedi prima."
+
+msgid "Qualification"
+msgstr "Qualifica"
+
+msgid "Record external training"
+msgstr "Registra formazione esterna"
+
+msgid "Register company"
+msgstr "Registra azienda"
+
+msgid "Register your company"
+msgstr "Registra la tua azienda"
+
+msgid "Regulatory Reference"
+msgstr "Riferimento normativo"
+
+msgid "Regulatory reference"
+msgstr "Riferimento normativo"
+
+msgid "Remove row"
+msgstr "Rimuovi riga"
+
+msgid "Request access"
+msgstr "Richiedi accesso"
+
+msgid "Requested"
+msgstr "Richiesto"
+
+msgid "Review and update the details of this payment."
+msgstr "Rivedi e aggiorna i dettagli di questo pagamento."
+
+msgid "Save record"
+msgstr "Salva record"
+
+msgid "Seats"
+msgstr "Posti"
+
+msgid "Seats / Licensing"
+msgstr "Posti / licenze"
+
+msgid "Seats Used"
+msgstr "Posti usati"
+
+msgid "Select person"
+msgstr "Seleziona persona"
+
+msgid "Self-Registered"
+msgstr "Auto-registrato"
+
+msgid "Set the discount, validity, and the courses or batches this coupon applies to."
+msgstr "Imposta lo sconto, la validità e i corsi o gruppi a cui si applica questo coupon."
+
+msgid "Set the name of your brand. Appears in the left sidebar."
+msgstr "Imposta il nome del tuo brand. Appare nella barra laterale sinistra."
+
+msgid "Share this code with your employees so they can join — or invite them after signing in."
+msgstr "Condividi questo codice con i tuoi dipendenti perché possano unirsi — oppure invitali dopo l'accesso."
+
+msgid "Shared Secret"
+msgstr "Segreto condiviso"
+
+msgid "Suspended"
+msgstr "Sospesa"
+
+msgid "The client identifier issued by the hub (matches a Distribution Client there)."
+msgstr "L'identificativo client rilasciato dall'hub (corrisponde a un Distribution Client lì)."
+
+msgid "This course is provided by the Worgify Academy hub and cannot be edited here."
+msgstr "Questo corso è fornito dall'hub Worgify Academy e non può essere modificato qui."
+
+msgid "This permanently deletes the user account and cannot be undone."
+msgstr "Questo elimina definitivamente l'account utente e non può essere annullato."
+
+msgid "This user cannot be deleted."
+msgstr "Questo utente non può essere eliminato."
+
+msgid "Title / Competency"
+msgstr "Titolo / Competenza"
+
+msgid "Title / competency"
+msgstr "Titolo / competenza"
+
+msgid "Training"
+msgstr "Formazione"
+
+msgid "Unable to update member"
+msgstr "Impossibile aggiornare il membro"
+
+msgid "Unknown feature."
+msgstr "Funzionalità sconosciuta."
+
+msgid "User (optional)"
+msgstr "Utente (facoltativo)"
+
+msgid "User deleted"
+msgstr "Utente eliminato"
+
+msgid "User {0} does not exist."
+msgstr "L'utente {0} non esiste."
+
+msgid "We've emailed {0} to set a password. Your organization join code is:"
+msgstr "Abbiamo inviato un'email a {0} per impostare una password. Il codice di adesione della tua organizzazione è:"
+
+msgid "What is this badge awarded for?"
+msgstr "Per cosa viene assegnato questo badge?"
+
+msgid "What is your use case for Worgify Academy?"
+msgstr "Per quale uso ti serve Worgify Academy?"
+
+msgid "Who is certified, expiring, expired, in progress, or has not started — across internal courses and external qualifications."
+msgstr "Chi è certificato, in scadenza, scaduto, in corso o non ha iniziato — tra corsi interni e qualifiche esterne."
+
+msgid "Worgify Academy"
+msgstr "Worgify Academy"
+
+msgid "Worgify Mode"
+msgstr "Modalità Worgify"
+
+msgid "Worgify Settings"
+msgstr "Impostazioni Worgify"
+
+msgid "You are not part of a learning organization yet."
+msgstr "Non fai ancora parte di un'organizzazione formativa."
+
+msgid "You do not administer this organization."
+msgstr "Non amministri questa organizzazione."
+
+msgid "comma-separated"
+msgstr "separati da virgola"
+
+msgid "course must be a string"
+msgstr "course deve essere una stringa"
+
+msgid "e.g. Course Champion"
+msgstr "es. Campione del corso"
+
+msgid "e.g. ISO 3834-2"
+msgstr "es. ISO 3834-2"
+
+msgid "e.g. ISO 9606-1"
+msgstr "es. ISO 9606-1"
+
+msgid "e.g. ISO 9606-1 Welder Qualification"
+msgstr "es. ISO 9606-1 Qualifica saldatore"
+
+msgid "e.g. TÜV"
+msgstr "es. TÜV"
+
+msgid "e.g. WELCOME10"
+msgstr "es. WELCOME10"
+
+msgid "file_url must be a string"
+msgstr "file_url deve essere una stringa"
+
+msgid "name must be a string"
+msgstr "name deve essere una stringa"
+
+msgid "people in your workforce"
+msgstr "persone nella tua forza lavoro"
+
+msgid "title must be a string"
+msgstr "title deve essere una stringa"
+
+msgid "user must be a string"
+msgstr "user deve essere una stringa"
