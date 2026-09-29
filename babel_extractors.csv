@@ -1,0 +1,3 @@
+**/notification/*/*.json,lms.gettext.notification.extract
+**/fixtures/notification.json,lms.gettext.notification.extract
+**/notification/*/*.md,frappe.gettext.extractors.html_template.extract

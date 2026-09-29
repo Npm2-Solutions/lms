@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Learning VERSION\n"
 "Report-Msgid-Bugs-To: jannat@frappe.io\n"
-"POT-Creation-Date: 2026-09-29 13:44+0000\n"
-"PO-Revision-Date: 2026-09-29 13:44+0000\n"
+"POT-Creation-Date: 2026-09-29 14:31+0000\n"
+"PO-Revision-Date: 2026-09-29 14:31+0000\n"
 "Last-Translator: jannat@frappe.io\n"
 "Language-Team: jannat@frappe.io\n"
 "MIME-Version: 1.0\n"
@@ -86,11 +86,17 @@ msgstr ""
 msgid "<span style=\"font-size: 18px;\"><b>Statistics</b></span>"
 msgstr ""
 
-#: lms/lms/doctype/lms_course/lms_course.py:76
+#: lms/lms/doctype/lms_course/lms_course.py:77
 msgid "A course cannot have both paid certificate and certificate of completion."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:218
+#. Notification: New job alert (message)
+#: lms/job/notification/new_job_alert/new_job_alert.json
+#: lms/job/notification/new_job_alert/new_job_alert.md:3
+msgid "A new Job Opportunity has been created."
+msgstr ""
+
+#: lms/lms/doctype/lms_batch/lms_batch.py:221
 msgid "A new batch '{0}' has been published that might interest you. Check it out!"
 msgstr ""
 
@@ -98,7 +104,7 @@ msgstr ""
 msgid "A new batch has been published on "
 msgstr ""
 
-#: lms/lms/doctype/lms_course/lms_course.py:210
+#: lms/lms/doctype/lms_course/lms_course.py:213
 msgid "A new course '{0}' has been published that might interest you. Check it out!"
 msgstr ""
 
@@ -106,8 +112,8 @@ msgstr ""
 msgid "A new course has been published on "
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:180
-#: lms/lms/doctype/lms_course/lms_course.py:174
+#: lms/lms/doctype/lms_batch/lms_batch.py:201
+#: lms/lms/doctype/lms_course/lms_course.py:192
 msgid "A new course has been published on {0}"
 msgstr ""
 
@@ -450,15 +456,15 @@ msgstr ""
 msgid "Amount (USD)"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:79
+#: lms/lms/doctype/lms_batch/lms_batch.py:80
 msgid "Amount and currency are required for paid batches."
 msgstr ""
 
-#: lms/lms/doctype/lms_course/lms_course.py:89
+#: lms/lms/doctype/lms_course/lms_course.py:90
 msgid "Amount and currency are required for paid certificates."
 msgstr ""
 
-#: lms/lms/doctype/lms_course/lms_course.py:86
+#: lms/lms/doctype/lms_course/lms_course.py:87
 msgid "Amount and currency are required for paid courses."
 msgstr ""
 
@@ -511,6 +517,7 @@ msgid "Applicable Items"
 msgstr ""
 
 #: frontend/src/pages/JobApplications.vue:24
+msgctxt "Job Opportunity"
 msgid "Application"
 msgstr ""
 
@@ -521,6 +528,7 @@ msgstr ""
 
 #: frontend/src/pages/JobApplications.vue:13
 #: frontend/src/pages/JobApplications.vue:25
+msgctxt "Job Opportunity"
 msgid "Applications"
 msgstr ""
 
@@ -614,7 +622,7 @@ msgstr ""
 msgid "Assessment added successfully"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:87
+#: lms/lms/doctype/lms_batch/lms_batch.py:88
 msgid "Assessment {0} has already been added to this batch."
 msgstr ""
 
@@ -974,6 +982,10 @@ msgstr ""
 msgid "Batch Start Date:"
 msgstr ""
 
+#: lms/lms/doctype/lms_batch/lms_batch.py:484
+msgid "Batch Start Reminder: {0}"
+msgstr ""
+
 #: frontend/src/pages/Batches/components/AdminBatchDashboard.vue:131
 msgid "Batch Summary"
 msgstr ""
@@ -993,7 +1005,7 @@ msgstr ""
 msgid "Batch deleted successfully"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:52
+#: lms/lms/doctype/lms_batch/lms_batch.py:53
 msgid "Batch end date cannot be before the batch start date"
 msgstr ""
 
@@ -1013,7 +1025,7 @@ msgstr ""
 msgid "Batch published"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:57
+#: lms/lms/doctype/lms_batch/lms_batch.py:58
 msgid "Batch start time cannot be greater than or equal to end time."
 msgstr ""
 
@@ -1187,7 +1199,7 @@ msgstr ""
 msgid "Category added successfully"
 msgstr ""
 
-#: frontend/src/utils/index.js:907
+#: frontend/src/utils/index.js:908
 msgid "Category created successfully"
 msgstr ""
 
@@ -1275,19 +1287,19 @@ msgstr ""
 msgid "Certification Name"
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate/lms_certificate.py:94
+#: lms/lms/doctype/lms_certificate/lms_certificate.py:97
 msgid "Certification cannot be issued as the member has not completed the course."
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate/lms_certificate.py:77
+#: lms/lms/doctype/lms_certificate/lms_certificate.py:80
 msgid "Certification cannot be issued as the member is not enrolled in this batch."
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate/lms_certificate.py:84
+#: lms/lms/doctype/lms_certificate/lms_certificate.py:87
 msgid "Certification cannot be issued as the member is not enrolled in this course."
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate/lms_certificate.py:214
+#: lms/lms/doctype/lms_certificate/lms_certificate.py:217
 msgid "Certification is not enabled for this course."
 msgstr ""
 
@@ -1439,6 +1451,10 @@ msgstr ""
 #: lms/fixtures/custom_field.json
 #: lms/job/doctype/job_opportunity/job_opportunity.json
 msgid "City"
+msgstr ""
+
+#: lms/lms/doctype/lms_live_class/lms_live_class.py:192
+msgid "Class Reminder: {0}"
 msgstr ""
 
 #: lms/templates/emails/live_class_reminder.html:10
@@ -1624,9 +1640,12 @@ msgid "Company Logo"
 msgstr ""
 
 #. Label of the company_name (Data) field in DocType 'Job Opportunity'
+#. Notification: New job alert (message)
 #. Label of a field in the job-opportunity Web Form
 #: frontend/src/pages/JobForm.vue:89
 #: lms/job/doctype/job_opportunity/job_opportunity.json
+#: lms/job/notification/new_job_alert/new_job_alert.json
+#: lms/job/notification/new_job_alert/new_job_alert.md:5
 #: lms/job/web_form/job_opportunity/job_opportunity.json
 msgid "Company Name"
 msgstr ""
@@ -1713,7 +1732,7 @@ msgstr ""
 msgid "Complete Your Enrollment"
 msgstr ""
 
-#: lms/lms/doctype/lms_payment/lms_payment.py:89
+#: lms/lms/doctype/lms_payment/lms_payment.py:115
 msgid "Complete Your Enrollment - Don't miss out!"
 msgstr ""
 
@@ -1826,7 +1845,7 @@ msgstr ""
 msgid "Confirmation Email Template"
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate/lms_certificate.py:33
+#: lms/lms/doctype/lms_certificate/lms_certificate.py:47
 msgid "Congratulations on getting certified!"
 msgstr ""
 
@@ -2252,7 +2271,7 @@ msgstr ""
 msgid "Course not found."
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate/lms_certificate.py:69
+#: lms/lms/doctype/lms_certificate/lms_certificate.py:72
 msgid "Course or Batch is required to issue a certificate."
 msgstr ""
 
@@ -2282,7 +2301,7 @@ msgstr ""
 msgid "Course updated successfully"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:64
+#: lms/lms/doctype/lms_batch/lms_batch.py:65
 msgid "Course {0} has already been added to this batch."
 msgstr ""
 
@@ -3164,7 +3183,7 @@ msgstr ""
 msgid "Enrollment Confirmation Email Template"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:147
+#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:164
 msgid "Enrollment Confirmation for {0}"
 msgstr ""
 
@@ -3182,7 +3201,7 @@ msgstr ""
 msgid "Enrollment from Batch"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:57
+#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:58
 msgid "Enrollment in this batch is restricted. Please contact the Administrator."
 msgstr ""
 
@@ -3244,7 +3263,7 @@ msgstr ""
 msgid "Error creating email template"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:291
+#: lms/lms/doctype/lms_batch/lms_batch.py:294
 msgid "Error creating live class. Please try again. {0}"
 msgstr ""
 
@@ -3324,7 +3343,7 @@ msgstr ""
 msgid "Evaluation cancelled successfully"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:92
+#: lms/lms/doctype/lms_batch/lms_batch.py:93
 msgid "Evaluation end date cannot be less than the batch end date."
 msgstr ""
 
@@ -3377,7 +3396,7 @@ msgstr ""
 msgid "Evaluator Schedule"
 msgstr ""
 
-#: lms/lms/doctype/lms_course/lms_course.py:79
+#: lms/lms/doctype/lms_course/lms_course.py:80
 msgid "Evaluator is required for paid certificates."
 msgstr ""
 
@@ -3519,7 +3538,7 @@ msgstr ""
 msgid "Failed to enroll in program: {0}"
 msgstr ""
 
-#: lms/lms/doctype/lms_live_class/lms_live_class.py:223
+#: lms/lms/doctype/lms_live_class/lms_live_class.py:226
 msgid "Failed to fetch attendance data from Zoom for class {0}: {1}"
 msgstr ""
 
@@ -3539,7 +3558,7 @@ msgstr ""
 msgid "Failed to update badge assignment: "
 msgstr ""
 
-#: frontend/src/utils/index.js:971
+#: frontend/src/utils/index.js:972
 msgid "Failed to update meta tags {0}"
 msgstr ""
 
@@ -3621,6 +3640,12 @@ msgstr ""
 
 #: frontend/src/pages/ProgrammingExercises/ProgrammingExerciseSubmissions.vue:41
 msgid "Filter by Status"
+msgstr ""
+
+#. Notification: New job alert (message)
+#: lms/job/notification/new_job_alert/new_job_alert.json
+#: lms/job/notification/new_job_alert/new_job_alert.md:10
+msgid "Find all the posted jobs <a href='{0}'>here</a>."
 msgstr ""
 
 #: frontend/src/components/Modals/EditProfile.vue:39
@@ -3951,11 +3976,16 @@ msgstr ""
 msgid "Hey"
 msgstr ""
 
+#. Notification: Certificate Request Reminder (message)
 #: lms/lms/notification/certificate_request_reminder/certificate_request_reminder.html:1
+#: lms/lms/notification/certificate_request_reminder/certificate_request_reminder.json
 #: lms/templates/emails/certificate_request_notification.html:1
 msgid "Hey {0}"
 msgstr ""
 
+#. Notification: New job alert (message)
+#: lms/job/notification/new_job_alert/new_job_alert.json
+#: lms/job/notification/new_job_alert/new_job_alert.md:1
 #: lms/templates/emails/job_report.html:3
 msgid "Hey,"
 msgstr ""
@@ -4434,13 +4464,29 @@ msgid "JavaScript"
 msgstr ""
 
 #. Label of the job (Link) field in DocType 'LMS Job Application'
-#: frontend/src/pages/Search/Search.vue:237
 #: lms/job/doctype/lms_job_application/lms_job_application.json
 msgid "Job"
 msgstr ""
 
+#: frontend/src/pages/Search/Search.vue:237
+msgctxt "Job Opportunity"
+msgid "Job"
+msgstr ""
+
+#. Notification: New job alert (message)
+#: lms/job/notification/new_job_alert/new_job_alert.json
+#: lms/job/notification/new_job_alert/new_job_alert.md:8
+msgid "Job Description"
+msgstr ""
+
 #: frontend/src/pages/JobForm.vue:20
 msgid "Job Details"
+msgstr ""
+
+#. Notification: New job alert (message)
+#: lms/job/notification/new_job_alert/new_job_alert.json
+#: lms/job/notification/new_job_alert/new_job_alert.md:7
+msgid "Job Location"
 msgstr ""
 
 #: lms/www/_lms.py:183
@@ -4456,19 +4502,26 @@ msgstr ""
 
 #. Label of the job_title (Data) field in DocType 'Job Opportunity'
 #. Label of the job_title (Data) field in DocType 'LMS Job Application'
+#. Notification: New job alert (message)
 #. Label of a field in the job-opportunity Web Form
 #: lms/job/doctype/job_opportunity/job_opportunity.json
 #: lms/job/doctype/lms_job_application/lms_job_application.json
+#: lms/job/notification/new_job_alert/new_job_alert.json
+#: lms/job/notification/new_job_alert/new_job_alert.md:6
 #: lms/job/web_form/job_opportunity/job_opportunity.json
 msgid "Job Title"
 msgstr ""
 
 #. Label of the jobs (Check) field in DocType 'LMS Settings'
 #. Label of the jobs_tab (Tab Break) field in DocType 'LMS Settings'
+#: lms/lms/doctype/lms_settings/lms_settings.json
+msgid "Jobs"
+msgstr ""
+
 #: frontend/src/pages/JobApplications.vue:8 frontend/src/pages/JobDetail.vue:10
 #: frontend/src/pages/JobForm.vue:317 frontend/src/pages/Jobs.vue:6
 #: frontend/src/pages/Jobs.vue:342
-#: lms/lms/doctype/lms_settings/lms_settings.json
+msgctxt "Job Opportunity"
 msgid "Jobs"
 msgstr ""
 
@@ -5134,6 +5187,7 @@ msgid "Manual Assignment"
 msgstr ""
 
 #: frontend/src/components/Quiz.vue:132
+msgctxt "LMS Quiz"
 msgid "Mark"
 msgstr ""
 
@@ -5384,7 +5438,7 @@ msgstr ""
 msgid "Member already added to program"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:68
+#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:69
 msgid "Member already enrolled in this batch"
 msgstr ""
 
@@ -5658,7 +5712,7 @@ msgstr ""
 msgid "New Job"
 msgstr ""
 
-#: lms/job/doctype/lms_job_application/lms_job_application.py:31
+#: lms/job/doctype/lms_job_application/lms_job_application.py:44
 msgid "New Job Applicant"
 msgstr ""
 
@@ -5678,15 +5732,20 @@ msgstr ""
 msgid "New Zoom Account"
 msgstr ""
 
-#: lms/lms/utils.py:479
+#: lms/lms/utils.py:480
 msgid "New comment in batch {0}"
+msgstr ""
+
+#. Notification: New job alert (subject)
+#: lms/job/notification/new_job_alert/new_job_alert.json
+msgid "New job added by {0}"
 msgstr ""
 
 #: frontend/src/components/Modals/LessonModal.vue:72
 msgid "New lesson"
 msgstr ""
 
-#: lms/lms/utils.py:470
+#: lms/lms/utils.py:471
 msgid "New reply on the topic {0} in course {1}"
 msgstr ""
 
@@ -5738,7 +5797,7 @@ msgstr ""
 msgid "No assessments added to this batch"
 msgstr ""
 
-#: lms/lms/doctype/lms_live_class/lms_live_class.py:77
+#: lms/lms/doctype/lms_live_class/lms_live_class.py:78
 msgid "No calendar is configured for the conferencing provider. Please set up a calendar to create events."
 msgstr ""
 
@@ -6027,11 +6086,11 @@ msgstr ""
 msgid "Online"
 msgstr ""
 
-#: frontend/src/utils/index.js:697
+#: frontend/src/utils/index.js:698
 msgid "Only PDF files are allowed."
 msgstr ""
 
-#: frontend/src/utils/index.js:703
+#: frontend/src/utils/index.js:704
 msgid "Only ZIP files are allowed."
 msgstr ""
 
@@ -6055,7 +6114,7 @@ msgstr ""
 msgid "Only an administrator can sync hub courses."
 msgstr ""
 
-#: frontend/src/utils/index.js:700
+#: frontend/src/utils/index.js:701
 msgid "Only document file of type .doc or .docx are allowed."
 msgstr ""
 
@@ -6079,7 +6138,7 @@ msgstr ""
 msgid "Only zip files are allowed"
 msgstr ""
 
-#: frontend/src/utils/index.js:708
+#: frontend/src/utils/index.js:709
 msgid "Only {0} file is allowed."
 msgstr ""
 
@@ -6427,7 +6486,7 @@ msgstr ""
 msgid "Payment gateways deleted successfully"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:46
+#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:47
 msgid "Payment is required to enroll in this batch."
 msgstr ""
 
@@ -6535,11 +6594,11 @@ msgstr ""
 msgid "Please complete the previous course to unlock this one."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:309
+#: lms/lms/doctype/lms_batch/lms_batch.py:312
 msgid "Please enable the Google Meet account to use this feature."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:340
+#: lms/lms/doctype/lms_batch/lms_batch.py:343
 msgid "Please enable the zoom account to use this feature."
 msgstr ""
 
@@ -6587,11 +6646,11 @@ msgstr ""
 msgid "Please fill the mandatory fields: {0}"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:72
+#: lms/lms/doctype/lms_batch/lms_batch.py:73
 msgid "Please install the Payments App to create a paid batch. Refer to the documentation for more details. {0}"
 msgstr ""
 
-#: lms/lms/doctype/lms_course/lms_course.py:69
+#: lms/lms/doctype/lms_course/lms_course.py:70
 msgid "Please install the Payments App to create a paid course. Refer to the documentation for more details. {0}"
 msgstr ""
 
@@ -6607,11 +6666,11 @@ msgstr ""
 msgid "Please login to continue with payment."
 msgstr ""
 
-#: lms/lms/utils.py:2282
+#: lms/lms/utils.py:2285
 msgid "Please login to view program details."
 msgstr ""
 
-#: lms/lms/utils.py:2247
+#: lms/lms/utils.py:2250
 msgid "Please login to view programs."
 msgstr ""
 
@@ -6619,7 +6678,9 @@ msgstr ""
 msgid "Please make sure to schedule your evaluation before this date."
 msgstr ""
 
+#. Notification: Certificate Request Reminder (message)
 #: lms/lms/notification/certificate_request_reminder/certificate_request_reminder.html:7
+#: lms/lms/notification/certificate_request_reminder/certificate_request_reminder.json
 #: lms/templates/emails/certificate_request_notification.html:7
 msgid "Please prepare well and be on time for the evaluations."
 msgstr ""
@@ -6644,11 +6705,11 @@ msgstr ""
 msgid "Please run the code to execute the test cases."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:137
+#: lms/lms/doctype/lms_batch/lms_batch.py:138
 msgid "Please select a Google Meet account for this batch."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:154
+#: lms/lms/doctype/lms_batch/lms_batch.py:155
 msgid "Please select a Zoom account for this batch."
 msgstr ""
 
@@ -7282,6 +7343,11 @@ msgstr ""
 msgid "Related Courses"
 msgstr ""
 
+#. Notification: Certificate Request Reminder (subject)
+#: lms/lms/notification/certificate_request_reminder/certificate_request_reminder.json
+msgid "Reminder for Certificate Evaluation"
+msgstr ""
+
 #. Option for the 'Work Mode' (Select) field in DocType 'Job Opportunity'
 #: frontend/src/pages/JobForm.vue:303 frontend/src/pages/Jobs.vue:336
 #: lms/job/doctype/job_opportunity/job_opportunity.json
@@ -7401,19 +7467,19 @@ msgstr ""
 msgid "Route"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:129
+#: lms/lms/doctype/lms_batch/lms_batch.py:130
 msgid "Row #{0} Date cannot be outside the batch duration."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:125
+#: lms/lms/doctype/lms_batch/lms_batch.py:126
 msgid "Row #{0} End time cannot be outside the batch duration."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:109
+#: lms/lms/doctype/lms_batch/lms_batch.py:110
 msgid "Row #{0} Start time cannot be greater than or equal to end time."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:118
+#: lms/lms/doctype/lms_batch/lms_batch.py:119
 msgid "Row #{0} Start time cannot be outside the batch duration."
 msgstr ""
 
@@ -7422,6 +7488,7 @@ msgid "Rows {0} have the duplicate questions."
 msgstr ""
 
 #: frontend/src/pages/ProgrammingExercises/ProgrammingExerciseSubmission.vue:59
+msgctxt "LMS Programming Exercise"
 msgid "Run"
 msgstr ""
 
@@ -7462,7 +7529,7 @@ msgstr ""
 msgid "SEO"
 msgstr ""
 
-#: frontend/src/utils/index.js:725
+#: frontend/src/utils/index.js:726
 msgid "SVG contains potentially unsafe content."
 msgstr ""
 
@@ -7600,7 +7667,7 @@ msgstr ""
 msgid "Seat Left"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:96
+#: lms/lms/doctype/lms_batch/lms_batch.py:97
 msgid "Seat count cannot be negative."
 msgstr ""
 
@@ -8381,11 +8448,11 @@ msgstr ""
 msgid "Thanks and Regards"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:313
+#: lms/lms/doctype/lms_batch/lms_batch.py:316
 msgid "The Google Meet account does not have a Google Calendar configured. Please set up a Google Calendar first."
 msgstr ""
 
-#: lms/lms/utils.py:2518
+#: lms/lms/utils.py:2521
 msgid "The batch does not exist."
 msgstr ""
 
@@ -8399,7 +8466,7 @@ msgstr ""
 msgid "The client identifier issued by the hub (matches a Distribution Client there)."
 msgstr ""
 
-#: lms/lms/utils.py:1996
+#: lms/lms/utils.py:1999
 msgid "The coupon code '{0}' is invalid."
 msgstr ""
 
@@ -8411,7 +8478,7 @@ msgstr ""
 msgid "The deadline to schedule evaluations has passed. Please contact the Instructor for assistance."
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:57
+#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:58
 msgid "The evaluator of this course is unavailable from {0} to {1}. Please select a date after {1}"
 msgstr ""
 
@@ -8423,23 +8490,23 @@ msgstr ""
 msgid "The last day to schedule your evaluations is "
 msgstr ""
 
-#: lms/lms/utils.py:2502
+#: lms/lms/utils.py:2505
 msgid "The lesson does not exist."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:149
+#: lms/lms/doctype/lms_batch/lms_batch.py:150
 msgid "The selected Google Meet account does not have a Google Calendar configured."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:142
+#: lms/lms/doctype/lms_batch/lms_batch.py:143
 msgid "The selected Google Meet account is disabled. Please enable it or select another account."
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:76
+#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:77
 msgid "The slot is already booked by another participant."
 msgstr ""
 
-#: lms/lms/utils.py:1694 lms/lms/utils.py:2199
+#: lms/lms/utils.py:1697 lms/lms/utils.py:2202
 msgid "The specified batch does not exist."
 msgstr ""
 
@@ -8455,8 +8522,8 @@ msgstr ""
 msgid "There are no courses currently. Create your first course to get started!"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:100
-#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:74
+#: lms/lms/doctype/lms_batch/lms_batch.py:101
+#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:75
 msgid "There are no seats available in this batch."
 msgstr ""
 
@@ -8505,15 +8572,15 @@ msgstr ""
 msgid "This class has ended"
 msgstr ""
 
-#: lms/lms/utils.py:2025
+#: lms/lms/utils.py:2028
 msgid "This coupon has expired."
 msgstr ""
 
-#: lms/lms/utils.py:2028
+#: lms/lms/utils.py:2031
 msgid "This coupon has reached its maximum usage limit."
 msgstr ""
 
-#: lms/lms/utils.py:2037
+#: lms/lms/utils.py:2040
 msgid "This coupon is not applicable to this {0}."
 msgstr ""
 
@@ -8521,7 +8588,7 @@ msgstr ""
 msgid "This course includes:"
 msgstr ""
 
-#: lms/lms/utils.py:1956
+#: lms/lms/utils.py:1959
 msgid "This course is free."
 msgstr ""
 
@@ -8662,7 +8729,7 @@ msgstr ""
 msgid "Timezone"
 msgstr ""
 
-#: lms/lms/doctype/lms_course/lms_course.py:82
+#: lms/lms/doctype/lms_course/lms_course.py:83
 msgid "Timezone is required for paid certificates."
 msgstr ""
 
@@ -8746,7 +8813,7 @@ msgstr ""
 msgid "To Date"
 msgstr ""
 
-#: lms/lms/utils.py:1970
+#: lms/lms/utils.py:1973
 msgid "To join this batch, please contact the Administrator."
 msgstr ""
 
@@ -8887,7 +8954,7 @@ msgstr ""
 msgid "Unable to add member"
 msgstr ""
 
-#: frontend/src/utils/index.js:912
+#: frontend/src/utils/index.js:913
 msgid "Unable to create category"
 msgstr ""
 
@@ -9097,7 +9164,7 @@ msgstr ""
 msgid "User {0} does not exist."
 msgstr ""
 
-#: lms/job/doctype/job_opportunity/job_opportunity.py:41
+#: lms/job/doctype/job_opportunity/job_opportunity.py:50
 msgid "User {0} has reported the job post {1}"
 msgstr ""
 
@@ -9328,7 +9395,7 @@ msgstr ""
 msgid "Yellow"
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:98
+#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:99
 msgid "You already have an evaluation on {0} at {1} for the course {2}."
 msgstr ""
 
@@ -9344,35 +9411,35 @@ msgstr ""
 msgid "You are already enrolled for this course."
 msgstr ""
 
-#: lms/lms/utils.py:1490
+#: lms/lms/utils.py:1493
 msgid "You are not authorized to view the assessments of this batch."
 msgstr ""
 
-#: lms/lms/utils.py:1692
+#: lms/lms/utils.py:1695
 msgid "You are not authorized to view the chart data of this batch."
 msgstr ""
 
-#: lms/lms/utils.py:2289
+#: lms/lms/utils.py:2292
 msgid "You are not authorized to view the details of this program."
 msgstr ""
 
-#: lms/lms/utils.py:1902
+#: lms/lms/utils.py:1905
 msgid "You are not authorized to view the discussion replies for this topic."
 msgstr ""
 
-#: lms/lms/utils.py:1855
+#: lms/lms/utils.py:1858
 msgid "You are not authorized to view the discussion topics for this item."
 msgstr ""
 
-#: lms/lms/utils.py:1601
+#: lms/lms/utils.py:1604
 msgid "You are not authorized to view the students of this batch."
 msgstr ""
 
-#: lms/lms/utils.py:1441
+#: lms/lms/utils.py:1444
 msgid "You are not authorized to view this quiz."
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate/lms_certificate.py:211
+#: lms/lms/doctype/lms_certificate/lms_certificate.py:214
 msgid "You are not enrolled in this course."
 msgstr ""
 
@@ -9429,7 +9496,7 @@ msgstr ""
 msgid "You cannot enroll in an unpublished course."
 msgstr ""
 
-#: lms/lms/utils.py:2350
+#: lms/lms/utils.py:2353
 msgid "You cannot enroll in an unpublished program."
 msgstr ""
 
@@ -9437,11 +9504,11 @@ msgstr ""
 msgid "You cannot enroll in this course as self-learning is disabled. Please contact the Administrator."
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:114
+#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:115
 msgid "You cannot schedule evaluations after {0}."
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:105
+#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:106
 msgid "You cannot schedule evaluations for past slots."
 msgstr ""
 
@@ -9449,15 +9516,15 @@ msgstr ""
 msgid "You do not administer this organization."
 msgstr ""
 
-#: lms/lms/utils.py:2530
+#: lms/lms/utils.py:2533
 msgid "You do not have access to this batch."
 msgstr ""
 
-#: lms/lms/utils.py:2513
+#: lms/lms/utils.py:2516
 msgid "You do not have access to this course."
 msgstr ""
 
-#: lms/lms/api.py:952 lms/lms/doctype/lms_batch/lms_batch.py:368
+#: lms/lms/api.py:952 lms/lms/doctype/lms_batch/lms_batch.py:371
 msgid "You do not have permission to access announcements for this batch."
 msgstr ""
 
@@ -9489,7 +9556,7 @@ msgstr ""
 msgid "You do not have permission to cancel this evaluation."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:246
+#: lms/lms/doctype/lms_batch/lms_batch.py:249
 msgid "You do not have permission to create a live class."
 msgstr ""
 
@@ -9525,11 +9592,11 @@ msgstr ""
 msgid "You do not have permission to modify this role."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:119
+#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:120
 msgid "You do not have permission to send confirmation emails for this enrollment."
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:183
+#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:186
 msgid "You do not have permission to set up calendar events for this evaluation."
 msgstr ""
 
@@ -9554,7 +9621,7 @@ msgstr ""
 msgid "You have a live class scheduled tomorrow. Please be prepared and be on time for the session."
 msgstr ""
 
-#: lms/job/doctype/lms_job_application/lms_job_application.py:26
+#: lms/job/doctype/lms_job_application/lms_job_application.py:27
 msgid "You have already applied for this job."
 msgstr ""
 
@@ -9590,7 +9657,7 @@ msgstr ""
 msgid "You have got a score of {0} for the quiz {1}"
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate/lms_certificate.py:220
+#: lms/lms/doctype/lms_certificate/lms_certificate.py:223
 msgid "You have not completed the course yet."
 msgstr ""
 
@@ -9614,7 +9681,7 @@ msgstr ""
 msgid "You have {0} {1} scheduled."
 msgstr ""
 
-#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:31
+#: lms/lms/doctype/lms_batch_enrollment/lms_batch_enrollment.py:32
 msgid "You must be a Moderator or Batch Evaluator to enroll users in a batch."
 msgstr ""
 
@@ -9678,7 +9745,7 @@ msgstr ""
 msgid "Your Output"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:462
+#: lms/lms/doctype/lms_batch/lms_batch.py:478
 msgid "Your batch {0} is starting tomorrow"
 msgstr ""
 
@@ -9690,7 +9757,7 @@ msgstr ""
 msgid "Your calendar is set."
 msgstr ""
 
-#: lms/lms/doctype/lms_live_class/lms_live_class.py:173
+#: lms/lms/doctype/lms_live_class/lms_live_class.py:186
 msgid "Your class on {0} is today"
 msgstr ""
 
@@ -9702,11 +9769,13 @@ msgstr ""
 msgid "Your evaluation for the course {0} has been scheduled on {1} at {2} ({3} time)."
 msgstr ""
 
+#. Notification: Certificate Request Reminder (message)
 #: lms/lms/notification/certificate_request_reminder/certificate_request_reminder.html:3
+#: lms/lms/notification/certificate_request_reminder/certificate_request_reminder.json
 msgid "Your evaluation for the course {0} has been scheduled on {1} at {2} {3}."
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:129
+#: lms/lms/doctype/lms_certificate_request/lms_certificate_request.py:143
 msgid "Your evaluation slot has been booked"
 msgstr ""
 
@@ -10073,11 +10142,11 @@ msgstr ""
 msgid "{0} has applied for the job position {1}"
 msgstr ""
 
-#: lms/lms/doctype/lms_batch/lms_batch.py:215
+#: lms/lms/doctype/lms_batch/lms_batch.py:218
 msgid "{0} has published a new batch {1}"
 msgstr ""
 
-#: lms/lms/doctype/lms_course/lms_course.py:207
+#: lms/lms/doctype/lms_course/lms_course.py:210
 msgid "{0} has published a new course {1}"
 msgstr ""
 
@@ -10093,19 +10162,21 @@ msgstr ""
 msgid "{0} is already a mentor for course {1}"
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate/lms_certificate.py:134
+#: lms/lms/doctype/lms_certificate/lms_certificate.py:137
 msgid "{0} is already certified for the batch {1}"
 msgstr ""
 
-#: lms/lms/doctype/lms_certificate/lms_certificate.py:115
+#: lms/lms/doctype/lms_certificate/lms_certificate.py:118
 msgid "{0} is already certified for the course {1}"
 msgstr ""
 
+#. Notification: Certificate Request Reminder (message)
 #: lms/lms/notification/certificate_request_reminder/certificate_request_reminder.html:5
+#: lms/lms/notification/certificate_request_reminder/certificate_request_reminder.json
 msgid "{0} is your evaluator"
 msgstr ""
 
-#: lms/lms/utils.py:572
+#: lms/lms/utils.py:591
 msgid "{0} mentioned you in a comment"
 msgstr ""
 
@@ -10113,7 +10184,7 @@ msgstr ""
 msgid "{0} mentioned you in a comment in your batch."
 msgstr ""
 
-#: lms/lms/utils.py:525 lms/lms/utils.py:531
+#: lms/lms/utils.py:526 lms/lms/utils.py:532
 msgid "{0} mentioned you in a comment in {1}"
 msgstr ""
 
