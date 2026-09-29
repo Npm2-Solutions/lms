@@ -3,7 +3,7 @@
 		<template #left-header>
 			<Breadcrumbs
 				class="h-7"
-				:items="[{ label: __('Jobs'), route: { name: 'Jobs' } }]"
+				:items="[{ label: __('Jobs', null, 'Job Opportunity'), route: { name: 'Jobs' } }]"
 			/>
 		</template>
 		<template #right-header>
@@ -339,7 +339,7 @@ const workModes = computed(() => {
 
 usePageMeta(() => {
 	return {
-		title: __('Jobs'),
+		title: __('Jobs', null, 'Job Opportunity'),
 		icon: brand.favicon,
 	}
 })

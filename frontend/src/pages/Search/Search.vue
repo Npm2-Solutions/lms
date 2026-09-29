@@ -234,7 +234,7 @@ const getDocTypeTitle = (doctype: string) => {
 	} else if (doctype === 'LMS Batch') {
 		return __('Batch')
 	} else if (doctype === 'Job Opportunity') {
-		return __('Job')
+		return __('Job', null, 'Job Opportunity')
 	} else {
 		return doctype
 	}

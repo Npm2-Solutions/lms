@@ -56,7 +56,7 @@
 						<template #prefix>
 							<Play class="size-3" />
 						</template>
-						{{ running ? __('Running') : __('Run') }}
+						{{ running ? __('Running') : __('Run', null, 'LMS Programming Exercise') }}
 					</Button>
 				</div>
 			</div>

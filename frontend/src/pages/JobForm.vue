@@ -314,7 +314,7 @@ const jobStatuses = computed(() => {
 const breadcrumbs = computed(() => {
 	let crumbs = [
 		{
-			label: __('Jobs'),
+			label: __('Jobs', null, 'Job Opportunity'),
 			route: { name: 'Jobs' },
 		},
 		{

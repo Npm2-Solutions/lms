@@ -564,6 +564,7 @@ const tabsStructure = computed(() => {
 									fields: [
 										{
 											label: 'Jobs',
+											context: 'LMS Settings',
 											name: 'jobs',
 											type: 'checkbox',
 											description: 'Show the Jobs link in the sidebar.',

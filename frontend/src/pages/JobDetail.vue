@@ -7,7 +7,7 @@
 				class="h-7"
 				:items="[
 					{
-						label: __('Jobs'),
+						label: __('Jobs', null, 'Job Opportunity'),
 						route: { name: 'Jobs' },
 					},
 					{

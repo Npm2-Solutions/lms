@@ -1,7 +1,7 @@
 export {}
 
 declare global {
-  function __(text: string): string
+  function __(text: string, replace?: unknown, context?: string | null): string
 
   interface String {
     format(...args: any[]): string
@@ -10,6 +10,6 @@ declare global {
 
 declare module 'vue' {
   interface ComponentCustomProperties {
-    __: (text: string) => string
+    __: (text: string, replace?: unknown, context?: string | null) => string
   }
 }

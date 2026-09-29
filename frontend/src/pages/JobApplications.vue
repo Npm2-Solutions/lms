@@ -5,12 +5,12 @@
 				<Breadcrumbs
 					class="h-7"
 					:items="[
-						{ label: __('Jobs'), route: { name: 'Jobs' } },
+						{ label: __('Jobs', null, 'Job Opportunity'), route: { name: 'Jobs' } },
 						{
 							label: applications.data?.[0]?.job_title,
 							route: { name: 'JobDetail', params: { job: props.job } },
 						},
-						{ label: __('Applications') },
+						{ label: __('Applications', null, 'Job Opportunity') },
 					]"
 				/>
 			</template>
@@ -21,8 +21,8 @@
 					{{ totalApplications.data }}
 					{{
 						totalApplications.data === 1
-							? __('Application')
-							: __('Applications')
+							? __('Application', null, 'Job Opportunity')
+							: __('Applications', null, 'Job Opportunity')
 					}}
 				</div>
 				<FormControl v-model="search" type="text" placeholder="Search">

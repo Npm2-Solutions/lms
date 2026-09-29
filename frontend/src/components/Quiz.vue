@@ -129,7 +129,7 @@
 						</div>
 						<div class="text-ink-gray-9 text-sm font-semibold item-left">
 							{{ question.marks }}
-							{{ question.marks == 1 ? __('Mark') : __('Marks') }}
+							{{ question.marks == 1 ? __('Mark', null, 'LMS Quiz') : __('Marks') }}
 						</div>
 					</div>
 					<div

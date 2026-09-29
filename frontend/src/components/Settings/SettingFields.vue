@@ -22,7 +22,7 @@
 					<div v-if="field.type == 'Upload'" class="py-3">
 						<div class="space-y-1 mb-2">
 							<div class="text-p-base font-medium text-ink-gray-7">
-								{{ __(field.label) }}
+								{{ __(field.label, null, field.context) }}
 							</div>
 							<div class="text-p-sm text-ink-gray-5">
 								{{ __(field.description) }}
@@ -74,7 +74,7 @@
 					<!-- Code/HTML: full-width block -->
 					<div v-else-if="field.type == 'Code'" class="py-3">
 						<CodeEditor
-							:label="__(field.label)"
+							:label="__(field.label, null, field.context)"
 							type="HTML"
 							description="The HTML you add here will be shown on your sign up page."
 							v-model="data[field.name]"
@@ -89,7 +89,7 @@
 					<div v-else-if="field.type == 'textarea'" class="py-3">
 						<div class="space-y-1 mb-2">
 							<div class="text-p-base font-medium text-ink-gray-7">
-								{{ __(field.label) }}
+								{{ __(field.label, null, field.context) }}
 							</div>
 							<div v-if="field.description" class="text-p-sm text-ink-gray-5">
 								{{ __(field.description) }}
@@ -100,7 +100,7 @@
 							:rows="field.rows || 3"
 							v-model="data[field.name]"
 							:required="field.reqd"
-							:placeholder="field.placeholder || __(field.label)"
+							:placeholder="field.placeholder || __(field.label, null, field.context)"
 						/>
 					</div>
 
@@ -108,7 +108,7 @@
 					<div v-else class="flex items-center justify-between gap-4 py-3">
 						<div class="flex flex-col">
 							<div class="text-p-base font-medium text-ink-gray-7">
-								{{ __(field.label) }}
+								{{ __(field.label, null, field.context) }}
 							</div>
 							<div v-if="field.description" class="text-p-sm text-ink-gray-5">
 								{{ __(field.description) }}
@@ -142,7 +142,7 @@
 								:options="field.options"
 								:required="field.reqd"
 								class="w-48"
-								:placeholder="field.placeholder || __(field.label)"
+								:placeholder="field.placeholder || __(field.label, null, field.context)"
 							/>
 						</div>
 					</div>

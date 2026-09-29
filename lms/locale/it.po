@@ -9909,3 +9909,43 @@ msgstr "Trovi tutte le offerte pubblicate <a href='{0}'>qui</a>."
 
 msgid "Reminder for Certificate Evaluation"
 msgstr "Promemoria per la valutazione del certificato"
+
+msgctxt "LMS Job Application"
+msgid "Job"
+msgstr "Offerta di lavoro"
+
+msgctxt "LMS Job Application"
+msgid "Job Title"
+msgstr "Posizione"
+
+msgctxt "Job Opportunity"
+msgid "Job"
+msgstr "Offerta di lavoro"
+
+msgctxt "Job Opportunity"
+msgid "Jobs"
+msgstr "Offerte di lavoro"
+
+msgctxt "Job Opportunity"
+msgid "Job Title"
+msgstr "Posizione"
+
+msgctxt "LMS Settings"
+msgid "Jobs"
+msgstr "Offerte di lavoro"
+
+msgctxt "Job Opportunity"
+msgid "Application"
+msgstr "Candidatura"
+
+msgctxt "Job Opportunity"
+msgid "Applications"
+msgstr "Candidature"
+
+msgctxt "LMS Quiz"
+msgid "Mark"
+msgstr "Voto"
+
+msgctxt "LMS Programming Exercise"
+msgid "Run"
+msgstr "Esegui"

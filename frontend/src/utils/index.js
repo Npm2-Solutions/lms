@@ -527,6 +527,7 @@ const getSidebarItems = (forMobile = false) => {
 				},
 				{
 					label: 'Jobs',
+					context: 'Job Opportunity',
 					icon: 'Briefcase',
 					to: 'Jobs',
 					activeFor: ['Jobs', 'JobDetail'],
