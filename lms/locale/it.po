@@ -9881,3 +9881,7 @@ msgstr "title deve essere una stringa"
 
 msgid "user must be a string"
 msgstr "user deve essere una stringa"
+
+msgctxt "Job Opportunity"
+msgid "Open"
+msgstr "Aperto"
