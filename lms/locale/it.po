@@ -9885,3 +9885,27 @@ msgstr "user deve essere una stringa"
 msgctxt "Job Opportunity"
 msgid "Open"
 msgstr "Aperto"
+
+msgid "Class Reminder: {0}"
+msgstr "Promemoria lezione: {0}"
+
+msgid "Batch Start Reminder: {0}"
+msgstr "Promemoria inizio gruppo: {0}"
+
+msgid "New job added by {0}"
+msgstr "Nuova offerta di lavoro pubblicata da {0}"
+
+msgid "A new Job Opportunity has been created."
+msgstr "È stata creata una nuova Opportunità di lavoro."
+
+msgid "Job Location"
+msgstr "Sede di lavoro"
+
+msgid "Job Description"
+msgstr "Descrizione del lavoro"
+
+msgid "Find all the posted jobs <a href='{0}'>here</a>."
+msgstr "Trovi tutte le offerte pubblicate <a href='{0}'>qui</a>."
+
+msgid "Reminder for Certificate Evaluation"
+msgstr "Promemoria per la valutazione del certificato"

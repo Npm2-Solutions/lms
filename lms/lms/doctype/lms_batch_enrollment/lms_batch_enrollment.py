@@ -7,6 +7,7 @@ import frappe
 from frappe import _
 from frappe.email.doctype.email_template.email_template import get_email_template
 from frappe.model.document import Document
+from lms.lms.reader_language import in_language, readers
 
 
 class LMSBatchEnrollment(Document):
@@ -144,7 +145,6 @@ def send_mail(doc):
 		as_dict=1,
 	)
 
-	subject = _("Enrollment Confirmation for {0}").format(batch.title)
 	template = "batch_confirmation"
 	custom_template = batch.confirmation_email_template or frappe.db.get_single_value(
 		"LMS Settings", "batch_confirmation_template"
@@ -159,17 +159,20 @@ def send_mail(doc):
 		"name": batch.name,
 	}
 
-	if custom_template:
-		email_template = get_email_template(custom_template, args)
-		subject = email_template.get("subject")
-		content = email_template.get("message")
+	for lang, recipients, _cc, _bcc in readers(doc.member):
+		with in_language(lang):
+			subject = _("Enrollment Confirmation for {0}").format(batch.title)
+			if custom_template:
+				email_template = get_email_template(custom_template, args)
+				subject = email_template.get("subject")
+				content = email_template.get("message")
 
-	frappe.sendmail(
-		recipients=doc.member,
-		subject=subject,
-		template=template if not custom_template else None,
-		content=content if custom_template else None,
-		args=args,
-		header=[_(batch.title), "green"],
-		retry=3,
-	)
+			frappe.sendmail(
+				recipients=recipients,
+				subject=subject,
+				template=template if not custom_template else None,
+				content=content if custom_template else None,
+				args=args,
+				header=[_(batch.title), "green"],
+				retry=3,
+			)

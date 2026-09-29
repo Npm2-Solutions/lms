@@ -4,6 +4,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
+from lms.lms.reader_language import in_language, readers
 
 
 class LMSJobApplication(Document):
@@ -28,8 +29,6 @@ class LMSJobApplication(Document):
 	def send_email_to_employer(self):
 		company_email = frappe.get_value("Job Opportunity", self.job, "company_email_address")
 		if company_email:
-			subject = _("New Job Applicant")
-
 			args = {
 				"full_name": frappe.db.get_value("User", self.user, "full_name"),
 				"job_title": self.job_title,
@@ -40,17 +39,20 @@ class LMSJobApplication(Document):
 					"file_url": self.resume,
 				},
 			)
-			frappe.sendmail(
-				recipients=company_email,
-				subject=subject,
-				template="job_application",
-				args=args,
-				attachments=[
-					{
-						"fname": resume.file_name,
-						"fcontent": resume.get_content(),
-					}
-				],
-				header=[subject, "green"],
-				retry=3,
-			)
+			for lang, recipients, _cc, _bcc in readers(company_email):
+				with in_language(lang):
+					subject = _("New Job Applicant")
+					frappe.sendmail(
+						recipients=recipients,
+						subject=subject,
+						template="job_application",
+						args=args,
+						attachments=[
+							{
+								"fname": resume.file_name,
+								"fcontent": resume.get_content(),
+							}
+						],
+						header=[subject, "green"],
+						retry=3,
+					)

@@ -8,6 +8,7 @@ from frappe.model.document import Document
 from frappe.model.naming import make_autoname
 from frappe.utils import nowdate
 from frappe.utils.telemetry import capture
+from lms.lms.reader_language import in_language, readers
 
 
 class LMSCertificate(Document):
@@ -30,7 +31,6 @@ class LMSCertificate(Document):
 			self.send_mail()
 
 	def send_mail(self):
-		subject = _("Congratulations on getting certified!")
 		template = "certification"
 		custom_template = frappe.db.get_single_value("LMS Settings", "certification_template")
 
@@ -42,18 +42,21 @@ class LMSCertificate(Document):
 			"template": self.template,
 		}
 
-		if custom_template:
-			email_template = get_email_template(custom_template, args)
-			subject = email_template.get("subject")
-			content = email_template.get("message")
-		frappe.sendmail(
-			recipients=self.member,
-			subject=subject,
-			template=template if not custom_template else None,
-			content=content if custom_template else None,
-			args=args,
-			header=[subject, "green"],
-		)
+		for lang, recipients, _cc, _bcc in readers(self.member):
+			with in_language(lang):
+				subject = _("Congratulations on getting certified!")
+				if custom_template:
+					email_template = get_email_template(custom_template, args)
+					subject = email_template.get("subject")
+					content = email_template.get("message")
+				frappe.sendmail(
+					recipients=recipients,
+					subject=subject,
+					template=template if not custom_template else None,
+					content=content if custom_template else None,
+					args=args,
+					header=[subject, "green"],
+				)
 
 	def validate_criteria(self):
 		self.validate_role_of_owner()

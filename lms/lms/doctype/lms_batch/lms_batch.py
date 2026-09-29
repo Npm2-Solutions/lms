@@ -23,6 +23,7 @@ from lms.lms.utils import (
 	guest_access_allowed,
 	update_payment_record,
 )
+from lms.lms.reader_language import in_language, readers
 
 
 class LMSBatch(Document):
@@ -177,7 +178,6 @@ def send_notification_for_published_batch(batch):
 def send_email_notification_for_published_batch(batch):
 	brand_name = frappe.db.get_single_value("Website Settings", "app_name")
 	brand_logo = frappe.db.get_single_value("Website Settings", "banner_image")
-	subject = _("A new course has been published on {0}").format(brand_name)
 	template = "published_batch_notification"
 	students = frappe.get_all("User", {"enabled": 1}, pluck="name")
 	instructors = get_instructors("LMS Batch", batch.name)
@@ -196,13 +196,16 @@ def send_email_notification_for_published_batch(batch):
 		"batch_url": frappe.utils.get_url(get_lms_route(f"batches/{batch.name}")),
 	}
 
-	frappe.sendmail(
-		recipients=instructors,
-		bcc=students,
-		subject=subject,
-		template=template,
-		args=args,
-	)
+	for lang, to, _cc, bcc in readers(instructors, bcc=students):
+		with in_language(lang):
+			subject = _("A new course has been published on {0}").format(brand_name)
+			frappe.sendmail(
+				recipients=to,
+				bcc=bcc,
+				subject=subject,
+				template=template,
+				args=args,
+			)
 	frappe.db.set_value("LMS Batch", batch.name, "notification_sent", 1)
 
 
@@ -459,7 +462,6 @@ def send_batch_start_reminder():
 
 
 def send_mail(batch, student):
-	subject = _("Your batch {0} is starting tomorrow").format(batch.title)
 	template = "batch_start_reminder"
 
 	args = {
@@ -471,13 +473,16 @@ def send_mail(batch, student):
 		"name": batch.name,
 	}
 
-	frappe.sendmail(
-		recipients=student.member,
-		subject=subject,
-		template=template,
-		args=args,
-		header=[_(f"Batch Start Reminder: {batch.title}"), "orange"],
-	)
+	for lang, recipients, _cc, _bcc in readers(student.member):
+		with in_language(lang):
+			subject = _("Your batch {0} is starting tomorrow").format(batch.title)
+			frappe.sendmail(
+				recipients=recipients,
+				subject=subject,
+				template=template,
+				args=args,
+				header=[_("Batch Start Reminder: {0}").format(batch.title), "orange"],
+			)
 
 
 def has_permission(doc, ptype="read", user=None):

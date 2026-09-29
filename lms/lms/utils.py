@@ -32,6 +32,7 @@ from pypika import functions as fn
 
 from lms.lms.doctype.lms_enrollment.lms_enrollment import update_program_progress
 from lms.lms.md import find_macros
+from lms.lms.reader_language import in_language, readers
 
 RE_SLUG_NOTALLOWED = re.compile("[^a-z0-9]+")
 LMS_ROLES = ["Moderator", "Course Creator", "Batch Evaluator", "LMS Student", "Company Admin"]
@@ -569,7 +570,6 @@ def notify_mentions_via_email(doc: Document, topic: dict):
 		)
 		for name in mentions
 	]
-	subject = _("{0} mentioned you in a comment").format(sender_fullname)
 	template = "mention_template"
 
 	if topic.reference_doctype == "LMS Batch":
@@ -586,14 +586,17 @@ def notify_mentions_via_email(doc: Document, topic: dict):
 	}
 
 	for recipient in recipients:
-		frappe.sendmail(
-			recipients=recipient,
-			subject=subject,
-			template=template,
-			args=args,
-			header=[subject, "green"],
-			retry=3,
-		)
+		for lang, to, _cc, _bcc in readers(recipient):
+			with in_language(lang):
+				subject = _("{0} mentioned you in a comment").format(sender_fullname)
+				frappe.sendmail(
+					recipients=to,
+					subject=subject,
+					template=template,
+					args=args,
+					header=[subject, "green"],
+					retry=3,
+				)
 
 
 def get_lesson_count(course: str) -> int:

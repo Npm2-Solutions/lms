@@ -18,6 +18,7 @@ from ...utils import (
 	update_payment_record,
 	validate_image,
 )
+from lms.lms.reader_language import in_language, readers
 
 
 class LMSCourse(Document):
@@ -171,7 +172,6 @@ def send_notification_for_published_courses():
 def send_email_notification_for_published_courses(courses):
 	brand_name = frappe.db.get_single_value("Website Settings", "app_name")
 	brand_logo = frappe.db.get_single_value("Website Settings", "banner_image")
-	subject = _("A new course has been published on {0}").format(brand_name)
 	template = "published_course_notification"
 	students = frappe.get_all("User", {"enabled": 1}, pluck="name")
 
@@ -187,13 +187,16 @@ def send_email_notification_for_published_courses(courses):
 			"course_url": frappe.utils.get_url(get_lms_route(f"courses/{course.name}")),
 		}
 
-		frappe.sendmail(
-			recipients=instructors,
-			bcc=students,
-			subject=subject,
-			template=template,
-			args=args,
-		)
+		for lang, to, _cc, bcc in readers(instructors, bcc=students):
+			with in_language(lang):
+				subject = _("A new course has been published on {0}").format(brand_name)
+				frappe.sendmail(
+					recipients=to,
+					bcc=bcc,
+					subject=subject,
+					template=template,
+					args=args,
+				)
 		frappe.db.set_value("LMS Course", course.name, "notification_sent", 1)
 
 

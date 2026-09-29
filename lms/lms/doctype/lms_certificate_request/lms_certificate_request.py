@@ -20,6 +20,7 @@ from frappe.utils import (
 )
 
 from lms.lms.utils import get_evaluator
+from lms.lms.reader_language import in_language, readers
 
 
 class LMSCertificateRequest(Document):
@@ -126,7 +127,6 @@ class LMSCertificateRequest(Document):
 			"Email Account", {"default_outgoing": 1, "enable_outgoing": 1}, "name"
 		)
 		if outgoing_email_account or frappe.conf.get("mail_login"):
-			subject = _("Your evaluation slot has been booked")
 			template = "certificate_request_notification"
 
 			args = {
@@ -138,15 +138,18 @@ class LMSCertificateRequest(Document):
 				"evaluator": self.evaluator_name,
 			}
 
-			frappe.sendmail(
-				recipients=[self.member],
-				cc=[self.evaluator],
-				subject=subject,
-				template=template,
-				args=args,
-				header=[subject, "green"],
-				retry=3,
-			)
+			for lang, recipients, cc, _bcc in readers([self.member], cc=[self.evaluator]):
+				with in_language(lang):
+					subject = _("Your evaluation slot has been booked")
+					frappe.sendmail(
+						recipients=recipients,
+						cc=cc,
+						subject=subject,
+						template=template,
+						args=args,
+						header=[subject, "green"],
+						retry=3,
+					)
 
 
 def schedule_evals():

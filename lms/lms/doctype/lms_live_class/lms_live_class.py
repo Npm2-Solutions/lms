@@ -10,6 +10,7 @@ from frappe.model.document import Document
 from frappe.utils import cint, format_date, format_time, get_datetime, nowdate
 
 from lms.lms.doctype.lms_batch.lms_batch import authenticate
+from lms.lms.reader_language import in_language, readers
 
 
 class LMSLiveClass(Document):
@@ -170,7 +171,6 @@ def send_live_class_reminder():
 
 
 def send_mail(live_class, student):
-	subject = _("Your class on {0} is today").format(live_class.title)
 	template = "live_class_reminder"
 
 	args = {
@@ -181,13 +181,16 @@ def send_mail(live_class, student):
 		"batch_name": live_class.batch_name,
 	}
 
-	frappe.sendmail(
-		recipients=student.member,
-		subject=subject,
-		template=template,
-		args=args,
-		header=[_(f"Class Reminder: {live_class.title}"), "orange"],
-	)
+	for lang, recipients, _cc, _bcc in readers(student.member):
+		with in_language(lang):
+			subject = _("Your class on {0} is today").format(live_class.title)
+			frappe.sendmail(
+				recipients=recipients,
+				subject=subject,
+				template=template,
+				args=args,
+				header=[_("Class Reminder: {0}").format(live_class.title), "orange"],
+			)
 
 
 def update_attendance():

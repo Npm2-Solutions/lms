@@ -8,6 +8,7 @@ from frappe.model.document import Document
 from frappe.utils import add_days, flt, nowdate
 
 from lms.lms.utils import get_lms_route
+from lms.lms.reader_language import in_language, readers
 
 
 class LMSPayment(Document):
@@ -86,7 +87,6 @@ def is_batch_sold_out(payment):
 
 
 def send_mail(payment):
-	subject = _("Complete Your Enrollment - Don't miss out!")
 	template = "payment_reminder"
 	custom_template = frappe.db.get_single_value("LMS Settings", "payment_reminder_template")
 
@@ -101,11 +101,6 @@ def send_mail(payment):
 		),
 	}
 
-	if custom_template:
-		email_template = get_email_template(custom_template, args)
-		subject = email_template.get("subject")
-		content = email_template.get("message")
-
 	instructors = frappe.get_all(
 		"Course Instructor",
 		{
@@ -115,13 +110,21 @@ def send_mail(payment):
 		pluck="instructor",
 	)
 
-	frappe.sendmail(
-		recipients=payment.member,
-		cc=instructors,
-		subject=subject,
-		template=template if not custom_template else None,
-		content=content if custom_template else None,
-		args=args,
-		header=[subject, "green"],
-		retry=3,
-	)
+	for lang, recipients, cc, _bcc in readers(payment.member, cc=instructors):
+		with in_language(lang):
+			subject = _("Complete Your Enrollment - Don't miss out!")
+			if custom_template:
+				email_template = get_email_template(custom_template, args)
+				subject = email_template.get("subject")
+				content = email_template.get("message")
+
+			frappe.sendmail(
+				recipients=recipients,
+				cc=cc,
+				subject=subject,
+				template=template if not custom_template else None,
+				content=content if custom_template else None,
+				args=args,
+				header=[subject, "green"],
+				retry=3,
+			)

@@ -8,6 +8,7 @@ from frappe.utils import add_months, get_link_to_form, getdate, validate_url
 from frappe.utils.user import get_system_managers
 
 from lms.lms.utils import generate_slug, validate_image
+from lms.lms.reader_language import in_language, readers
 
 
 class JobOpportunity(Document):
@@ -38,18 +39,20 @@ def update_job_openings():
 def report(job: str, reason: str):
 	system_managers = get_system_managers(only_name=True)
 	user = frappe.db.get_value("User", frappe.session.user, "full_name")
-	subject = _("User {0} has reported the job post {1}").format(user, job)
 	args = {
 		"job": job,
 		"job_url": get_link_to_form("Job Opportunity", job),
 		"user": user,
 		"reason": reason,
 	}
-	frappe.sendmail(
-		recipients=system_managers,
-		subject=subject,
-		header=[subject, "green"],
-		template="job_report",
-		args=args,
-		now=True,
-	)
+	for lang, recipients, _cc, _bcc in readers(system_managers):
+		with in_language(lang):
+			subject = _("User {0} has reported the job post {1}").format(user, job)
+			frappe.sendmail(
+				recipients=recipients,
+				subject=subject,
+				header=[subject, "green"],
+				template="job_report",
+				args=args,
+				now=True,
+			)
