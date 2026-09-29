@@ -170,6 +170,17 @@ doc_events = {
 # absent consumers simply ignore these, so the fork stays standalone (hub) too.
 
 # Surface issued training certificates into the worgify Personnel 360 view.
+# Learning personas (Design 11 §9) — merged by worgify's `_sync_role_profiles`.
+# They lived in the pre-LMS `training` app, so a site with LMS and without it had
+# no profile carrying an LMS role while guide 16 told the admin to assign them.
+# The "restricted author" is Course Creator without Moderator (Moderator gates
+# publishing and pricing).
+role_profiles = [
+	{"name": "Learner", "roles": [{"role": "LMS Student"}, {"role": "OS Base Reader"}]},
+	{"name": "L&D Manager", "roles": [{"role": "Course Creator"}, {"role": "Moderator"},
+									  {"role": "Batch Evaluator"}, {"role": "OS Base Reader"}]},
+]
+
 personnel_role_profiles = [
 	{
 		"doctype": "LMS Certificate",
