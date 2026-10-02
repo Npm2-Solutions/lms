@@ -1336,7 +1336,7 @@ msgstr "Scopri il corso"
 #: lms/lms/doctype/lms_question/lms_question.json
 #: lms/lms/doctype/lms_quiz_question/lms_quiz_question.json
 msgid "Choices"
-msgstr "Scelte"
+msgstr "Opzioni"
 
 #: frontend/src/components/Quiz.vue:888
 msgid "Choose all answers that apply"
@@ -3267,7 +3267,7 @@ msgstr "Filtra per stato"
 #: frontend/src/components/Modals/EditProfile.vue:148
 #: frontend/src/components/Modals/NewMemberModal.vue:30
 msgid "First Name"
-msgstr "Nome di battesimo"
+msgstr "Nome"
 
 #. Option for the 'Time Preference' (Select) field in DocType 'User'
 #: lms/fixtures/custom_field.json
@@ -3355,7 +3355,7 @@ msgstr "Dalla data"
 #: lms/lms/doctype/lms_program_member/lms_program_member.json
 #: lms/templates/signup-form.html:5
 msgid "Full Name"
-msgstr "Nome e Cognome"
+msgstr "Nome e cognome"
 
 #. Option for the 'Type' (Select) field in DocType 'Job Opportunity'
 #. Option in a Select field in the job-opportunity Web Form
@@ -5421,7 +5421,7 @@ msgstr "Ufficio vicino a casa"
 #: frontend/src/pages/Batches/components/NewBatchModal.vue:298
 #: lms/lms/doctype/lms_batch/lms_batch.json
 msgid "Offline"
-msgstr "Offline"
+msgstr "Senza rete"
 
 #: frontend/src/components/CourseCardOverlay.vue:109
 msgid "On demand course video"
@@ -5820,7 +5820,7 @@ msgstr "L'app Payments non è installata"
 #: frontend/src/pages/Courses/StudentCourseProgress.vue:197
 #: lms/lms/doctype/lms_certificate_evaluation/lms_certificate_evaluation.json
 msgid "Pending"
-msgstr "In Attesa"
+msgstr "In attesa"
 
 #: frontend/src/pages/Profile.vue:303
 msgid "People"
